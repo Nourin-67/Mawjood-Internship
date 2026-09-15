@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="BLogicLayer/BLogicLayer.csproj" />
+  <Project Path="DataAccessLayer/DataAccessLayer.csproj" />
+  <Project Path="Mawjood Internship/Mawjood Internship.csproj" />
+</Solution>

@@ -1,0 +1,93 @@
+﻿@* @using BLogicLayer.ViewModels
+@model CompanyViewModel
+
+@{
+    ViewData["Title"] = "Company Details";
+}
+
+<div class="card shadow">
+    <div class="card-header bg-dark text-white">
+        <h3>Company Details</h3>
+    </div>
+
+    <div class="card-body">
+        <dl class="row">
+
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">City</dt>
+            <dd class="col-sm-9">@Model.City</dd>
+
+            <dt class="col-sm-3">Government</dt>
+            <dd class="col-sm-9">@Model.Government</dd>
+
+        </dl>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-warning">
+                Edit
+            </a>
+        }
+    </div>
+</div> *@
+
+
+
+
+@model BLogicLayer.ViewModels.CompanyViewModel
+
+@{
+    ViewData["Title"] = "Company Details";
+}
+
+<div class="container mt-4">
+
+    <h2>Company Details</h2>
+
+    <div class="card p-4">
+
+        <h4>@Model.Name</h4>
+
+        <p>
+            <strong>Email:</strong>
+            @Model.Email
+        </p>
+
+        <p>
+            <strong>Description:</strong>
+            @Model.Description
+        </p>
+
+        <p>
+            <strong>City:</strong>
+            @Model.City
+        </p>
+
+        <p>
+            <strong>Government:</strong>
+            @Model.Government
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-secondary mt-3">
+        Back
+    </a>
+
+</div>

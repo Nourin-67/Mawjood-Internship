@@ -1,0 +1,370 @@
+﻿@* @model BLogicLayer.ViewModels.CVViewModel
+
+@{
+    ViewData["Title"] = "My CV";
+}
+
+<style>
+
+    .cv-page {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        padding: 40px 15px;
+    }
+
+    .cv-box {
+        width: 100%;
+        max-width: 600px;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .cv-title {
+        text-align: center;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .cv-subtitle {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    .option-box {
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .option-title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .or {
+        text-align: center;
+        color: #888;
+        margin: 20px 0;
+    }
+
+</style>
+
+
+<div class="cv-page">
+
+    <div class="cv-box">
+
+
+        <!-- Title -->
+
+        <h2 class="cv-title">
+            My CV
+        </h2>
+
+
+        <p class="cv-subtitle">
+
+            Add your CV to increase your internship opportunities.
+
+        </p>
+
+
+        <!-- Error -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @TempData["Error"]
+
+            </div>
+        }
+
+
+        <!-- Success -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+
+                @TempData["Success"]
+
+            </div>
+        }
+
+
+        <!-- ========================= -->
+        <!-- OPTION 1 -->
+        <!-- Existing CV Link -->
+        <!-- ========================= -->
+
+        <div class="option-box">
+
+            <div class="option-title">
+
+                I already have a CV
+
+            </div>
+
+
+            <p class="text-muted">
+
+                If you already have a CV on Google Drive,
+                LinkedIn, OneDrive, or another website,
+                paste its link here.
+
+            </p>
+
+
+            <form asp-action="SaveLink"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+
+                <label class="form-label">
+
+                    CV Link
+
+                </label>
+
+
+                <input type="url"
+                       name="cvLink"
+                       class="form-control mb-3"
+                       placeholder="https://drive.google.com/..."
+                       required />
+
+
+                <button type="submit"
+                        class="btn btn-primary w-100">
+
+                    Save CV Link
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- OR -->
+
+        <div class="or">
+
+            OR
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- OPTION 2 -->
+        <!-- Create CV -->
+        <!-- ========================= -->
+
+        <div class="option-box text-center">
+
+            <div class="option-title">
+
+                I don't have a CV
+
+            </div>
+
+
+            <p class="text-muted">
+
+                Create a professional CV
+                directly inside Mawjood Internship.
+
+            </p>
+
+
+            <a asp-action="Create"
+               class="btn btn-outline-primary w-100">
+
+                Create My CV
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+</div> *@
+
+
+
+        @model BLogicLayer.ViewModels.CVViewModel
+
+@{
+    ViewData["Title"] = "My CV";
+}
+
+<style>
+
+    .cv-page {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        padding: 40px 15px;
+    }
+
+    .cv-box {
+        width: 100%;
+        max-width: 600px;
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .cv-title {
+        text-align: center;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .cv-subtitle {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    .option-box {
+        border: 1px solid #ddd;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+
+    .option-title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .or {
+        text-align: center;
+        color: #888;
+        margin: 20px 0;
+    }
+
+</style>
+
+<div class="cv-page">
+
+    <div class="cv-box">
+
+        <!-- TITLE -->
+
+        <h2 class="cv-title">
+            My CV
+        </h2>
+
+        <p class="cv-subtitle">
+            Add your CV to increase your internship opportunities.
+        </p>
+
+
+        <!-- ERROR -->
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["Error"]
+            </div>
+        }
+
+
+        <!-- SUCCESS -->
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+
+        <!-- EXISTING CV -->
+
+        <div class="option-box">
+
+            <div class="option-title">
+                I already have a CV
+            </div>
+
+            <p class="text-muted">
+                If you already have a CV on Google Drive,
+                LinkedIn, OneDrive, or another website,
+                paste its link here.
+            </p>
+
+            <form asp-action="SaveExternalCV"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <label class="form-label">
+                    CV Link
+                </label>
+
+                <input type="url"
+                       name="cvLink"
+                       class="form-control mb-3"
+                       placeholder="https://drive.google.com/..."
+                       required />
+
+                <button type="submit"
+                        class="btn btn-primary w-100">
+
+                    Save CV Link
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- OR -->
+
+        <div class="or">
+            OR
+        </div>
+
+
+        <!-- CREATE CV -->
+
+        <div class="option-box text-center">
+
+            <div class="option-title">
+                I don't have a CV
+            </div>
+
+            <p class="text-muted">
+                Create a professional CV
+                directly inside Mawjood Internship.
+            </p>
+
+            <a asp-action="Create"
+               class="btn btn-outline-primary w-100">
+
+                Create My CV
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

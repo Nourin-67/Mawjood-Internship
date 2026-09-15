@@ -1,0 +1,123 @@
+﻿@* @using BLogicLayer.ViewModels
+@model ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Application Details";
+}
+
+<div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+
+        <h3>
+            Application Details
+        </h3>
+
+    </div>
+
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">
+                Student
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.StudentName
+            </dd>
+
+            <dt class="col-sm-3">
+                Internship
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.InternshipTitle
+            </dd>
+
+            <dt class="col-sm-3">
+                Date
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Date.ToShortDateString()
+            </dd>
+
+            <dt class="col-sm-3">
+                Status
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Status
+            </dd>
+
+        </dl>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+        @if (User.IsInRole("Admin") &&
+             Model.Status != "Rejected")
+        {
+            <form asp-action="Reject"
+                  asp-route-id="@Model.Id"
+                  method="post"
+                  style="display:inline">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Reject
+                </button>
+
+            </form>
+        }
+
+    </div>
+
+</div> *@
+
+
+@model BLogicLayer.ViewModels.ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Application Details";
+}
+
+<div class="container mt-4">
+
+    <h2>Application Details</h2>
+
+    <div class="card p-4">
+
+        <p>
+            <strong>Student:</strong>
+            @Model.StudentName
+        </p>
+
+        <p>
+            <strong>Internship:</strong>
+            @Model.InternshipTitle
+        </p>
+
+        <p>
+            <strong>Date:</strong>
+            @Model.Date.ToShortDateString()
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            @Model.Status
+        </p>
+
+    </div>
+
+    <a asp-action="Index"
+       class="btn btn-secondary mt-3">
+        Back
+    </a>
+
+</div>

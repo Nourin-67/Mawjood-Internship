@@ -1,0 +1,161 @@
+﻿@* @using BLogicLayer.ViewModels
+@model InternshipViewModel
+
+@{
+    ViewData["Title"] = "Add Internship";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+
+        <div class="card shadow p-4">
+
+            <h2 class="mb-4">
+                Add Internship
+            </h2>
+
+            <form asp-action="Create" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="text-danger">
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Title"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Title"
+                           class="form-control" />
+
+                    <span asp-validation-for="Title"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Location"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Location"
+                           class="form-control" />
+
+                    <span asp-validation-for="Location"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="CompanyId"
+                           class="form-label">
+                        Company ID
+                    </label>
+
+                    <input asp-for="CompanyId"
+                           type="number"
+                           class="form-control" />
+
+                    <span asp-validation-for="CompanyId"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Save
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} *@
+
+
+@model BLogicLayer.ViewModels.InternshipViewModel
+
+@{
+    ViewData["Title"] = "Create Internship";
+}
+
+<div class="container mt-4">
+
+    <h2>Create Internship</h2>
+
+    <form asp-action="Create" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger">
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Title"
+                   class="form-label">
+            </label>
+
+            <input asp-for="Title"
+                   class="form-control" />
+
+            <span asp-validation-for="Title"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="Location"
+                   class="form-label">
+            </label>
+
+            <input asp-for="Location"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label asp-for="CompanyId"
+                   class="form-label">
+                Company
+            </label>
+
+            <input asp-for="CompanyId"
+                   class="form-control" />
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-success">
+            Create
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>

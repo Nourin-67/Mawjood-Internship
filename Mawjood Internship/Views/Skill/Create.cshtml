@@ -1,0 +1,102 @@
+﻿@* @using BLogicLayer.ViewModels
+@model SkillViewModel
+
+@{
+    ViewData["Title"] = "Add Skill";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+
+        <div class="card shadow p-4">
+
+            <h2>Add Skill</h2>
+
+            <form asp-action="Create" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="text-danger">
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Name"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control" />
+
+                    <span asp-validation-for="Name"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Save
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+} *@
+
+
+
+
+@model BLogicLayer.ViewModels.SkillViewModel
+
+@{
+    ViewData["Title"] = "Create Skill";
+}
+
+<div class="container mt-4">
+
+    <h2>Create Skill</h2>
+
+    <form asp-action="Create" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+
+            <label asp-for="Name"
+                   class="form-label">
+            </label>
+
+            <input asp-for="Name"
+                   class="form-control" />
+
+            <span asp-validation-for="Name"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-success">
+            Create
+        </button>
+
+        <a asp-action="Index"
+           class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>

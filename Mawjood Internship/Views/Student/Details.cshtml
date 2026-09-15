@@ -1,0 +1,112 @@
+﻿@using BLogicLayer.ViewModels
+@model StudentViewModel
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+        <h3>Student Details</h3>
+    </div>
+
+    <div class="card-body">
+
+        <dl class="row">
+
+            <dt class="col-sm-3">
+                Name
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.FName @Model.LName
+            </dd>
+
+            <dt class="col-sm-3">
+                Email
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Email
+            </dd>
+
+            <dt class="col-sm-3">
+                University
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.University
+            </dd>
+
+            <dt class="col-sm-3">
+                Major
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Major
+            </dd>
+
+            <dt class="col-sm-3">
+                Education
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Education
+            </dd>
+
+            <dt class="col-sm-3">
+                Academic Year
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.AcademicYear
+            </dd>
+
+            <dt class="col-sm-3">
+                City
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.City
+            </dd>
+
+            <dt class="col-sm-3">
+                Government
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.Government
+            </dd>
+
+            <dt class="col-sm-3">
+                CV
+            </dt>
+
+            <dd class="col-sm-9">
+                @Model.CV
+            </dd>
+
+        </dl>
+
+        <div class="mt-3">
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning">
+                    Edit
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</div>

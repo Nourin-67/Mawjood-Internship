@@ -1,0 +1,154 @@
+﻿@* @using BLogicLayer.ViewModels
+@model List<CompanyViewModel>
+
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Companies</h2>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-primary">
+            Add Company
+        </a>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No companies found.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-hover bg-white">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>City</th>
+                <th>Government</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var company in Model)
+            {
+                <tr>
+                    <td>@company.Id</td>
+                    <td>@company.Name</td>
+                    <td>@company.Email</td>
+                    <td>@company.City</td>
+                    <td>@company.Government</td>
+
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@company.Id"
+                           class="btn btn-info btn-sm">
+                            Details
+                        </a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@company.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@company.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} *@
+
+
+
+
+@model List<BLogicLayer.ViewModels.CompanyViewModel>
+
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Companies</h2>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                + Add Company
+            </a>
+        }
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Description</th>
+                <th>City</th>
+                <th>Government</th>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var company in Model)
+            {
+                <tr>
+                    <td>@company.Name</td>
+                    <td>@company.Email</td>
+                    <td>@company.Description</td>
+                    <td>@company.City</td>
+                    <td>@company.Government</td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-id="@company.Id"
+                               class="btn btn-info btn-sm">
+                                Details
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@company.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@company.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+</div>

@@ -1,0 +1,222 @@
+﻿@* @using BLogicLayer.ViewModels
+@model List<ApplicationViewModel>
+
+@{
+    ViewData["Title"] = "Applications";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Applications</h2>
+
+    <a asp-action="Create"
+       class="btn btn-primary">
+        Apply
+    </a>
+
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No applications found.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-hover bg-white">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>ID</th>
+                <th>Student</th>
+                <th>Internship</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var application in Model)
+            {
+                <tr>
+
+                    <td>@application.Id</td>
+
+                    <td>
+                        @application.StudentName
+                    </td>
+
+                    <td>
+                        @application.InternshipTitle
+                    </td>
+
+                    <td>
+                        @application.Date.ToShortDateString()
+                    </td>
+
+                    <td>
+                        @if (application.Status == "Rejected")
+                        {
+                            <span class="badge bg-danger">
+                                Rejected
+                            </span>
+                        }
+                        else if (application.Status == "Accepted")
+                        {
+                            <span class="badge bg-success">
+                                Accepted
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                @application.Status
+                            </span>
+                        }
+                    </td>
+
+                    <td>
+
+                        <a asp-action="Details"
+                           asp-route-id="@application.Id"
+                           class="btn btn-info btn-sm">
+                            Details
+                        </a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            @if (application.Status != "Rejected")
+                            {
+                                <form asp-action="Reject"
+                                      asp-route-id="@application.Id"
+                                      method="post"
+                                      style="display:inline">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Are you sure you want to reject this application?');">
+                                        Reject
+                                    </button>
+
+                                </form>
+                            }
+
+                            <a asp-action="Edit"
+                               asp-route-id="@application.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@application.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        }
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+} *@
+
+
+@model List<BLogicLayer.ViewModels.ApplicationViewModel>
+
+@{
+    ViewData["Title"] = "Applications";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Applications</h2>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+            <tr>
+                <th>Student</th>
+                <th>Internship</th>
+                <th>Date</th>
+                <th>Status</th>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var application in Model)
+            {
+                <tr>
+
+                    <td>
+                        @application.StudentName
+                    </td>
+
+                    <td>
+                        @application.InternshipTitle
+                    </td>
+
+                    <td>
+                        @application.Date.ToShortDateString()
+                    </td>
+
+                    <td>
+                        @application.Status
+                    </td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+
+                            <a asp-action="Details"
+                               asp-route-id="@application.Id"
+                               class="btn btn-info btn-sm">
+                                Details
+                            </a>
+
+                            @if (application.Status != "Rejected")
+                            {
+                                <form asp-action="Reject"
+                                      asp-route-id="@application.Id"
+                                      method="post"
+                                      style="display:inline">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm">
+                                        Reject
+                                    </button>
+
+                                </form>
+                            }
+
+                        </td>
+                    }
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

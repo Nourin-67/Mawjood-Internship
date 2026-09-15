@@ -1,0 +1,140 @@
+﻿@* @using BLogicLayer.ViewModels
+@model List<SkillViewModel>
+
+@{
+    ViewData["Title"] = "Skills";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Skills</h2>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+            Add Skill
+        </a>
+    }
+
+</div>
+
+<div class="row">
+
+    @foreach (var skill in Model)
+    {
+        <div class="col-md-3 mb-3">
+
+            <div class="card shadow">
+
+                <div class="card-body">
+
+                    <h5>@skill.Name</h5>
+
+                    <a asp-action="Details"
+                       asp-route-id="@skill.Id"
+                       class="btn btn-info btn-sm">
+                        Details
+                    </a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit"
+                           asp-route-id="@skill.Id"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete"
+                           asp-route-id="@skill.Id"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div> *@
+
+
+@model List<BLogicLayer.ViewModels.SkillViewModel>
+
+@{
+    ViewData["Title"] = "Skills";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Skills</h2>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create"
+               class="btn btn-primary">
+                + Add Skill
+            </a>
+        }
+
+    </div>
+
+    <table class="table table-bordered">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Skill Name</th>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var skill in Model)
+            {
+                <tr>
+
+                    <td>@skill.Name</td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+
+                            <a asp-action="Details"
+                               asp-route-id="@skill.Id"
+                               class="btn btn-info btn-sm">
+                                Details
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@skill.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@skill.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+
+                        </td>
+                    }
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

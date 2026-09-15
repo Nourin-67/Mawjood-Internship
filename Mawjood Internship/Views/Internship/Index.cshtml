@@ -1,0 +1,167 @@
+﻿@* @using BLogicLayer.ViewModels
+@model List<InternshipViewModel>
+
+@{
+    ViewData["Title"] = "Internships";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2>Internships</h2>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+            Add Internship
+        </a>
+    }
+
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No internships found.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var internship in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card shadow h-100">
+
+                    <div class="card-body">
+
+                        <h4 class="card-title">
+                            @internship.Title
+                        </h4>
+
+                        <p>
+                            <strong>Location:</strong>
+                            @internship.Location
+                        </p>
+
+                        <p>
+                            <strong>Company:</strong>
+                            @internship.CompanyName
+                        </p>
+
+                        <a asp-action="Details"
+                           asp-route-id="@internship.Id"
+                           class="btn btn-info btn-sm">
+                            Details
+                        </a>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@internship.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@internship.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+} *@
+
+
+@model List<BLogicLayer.ViewModels.InternshipViewModel>
+
+@{
+    ViewData["Title"] = "Internships";
+}
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Internships</h2>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Create"
+               class="btn btn-primary">
+                + Add Internship
+            </a>
+        }
+
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Location</th>
+                <th>Company</th>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var internship in Model)
+            {
+                <tr>
+
+                    <td>@internship.Title</td>
+
+                    <td>@internship.Location</td>
+
+                    <td>@internship.CompanyName</td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+
+                            <a asp-action="Details"
+                               asp-route-id="@internship.Id"
+                               class="btn btn-info btn-sm">
+                                Details
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@internship.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@internship.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+
+                        </td>
+                    }
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

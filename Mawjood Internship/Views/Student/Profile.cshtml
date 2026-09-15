@@ -1,0 +1,139 @@
+﻿@model BLogicLayer.ViewModels.StudentViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-5">
+
+                    <h2 class="text-center mb-4">
+                        My Profile
+                    </h2>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                First Name
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.FName
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                Last Name
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.LName
+                            </p>
+                        </div>
+
+                        <div class="col-md-12 mb-3">
+                            <label class="fw-bold">
+                                Email
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.Email
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                University
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.University
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                Major
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.Major
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                Academic Year
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.AcademicYear
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                Education
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.Education
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                City
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.City
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="fw-bold">
+                                Government
+                            </label>
+
+                            <p class="form-control bg-light">
+                                @Model.Government
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+
+                        <a asp-controller="CV"
+                           asp-action="Index"
+                           class="btn btn-primary">
+                            My CV
+                        </a>
+
+                        <a asp-controller="Internship"
+                           asp-action="Index"
+                           class="btn btn-outline-primary">
+                            Browse Internships
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

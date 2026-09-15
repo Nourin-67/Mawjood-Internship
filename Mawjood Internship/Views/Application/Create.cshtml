@@ -1,0 +1,101 @@
+﻿@using BLogicLayer.ViewModels
+@model ApplicationViewModel
+
+@{
+    ViewData["Title"] = "Create Application";
+}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow p-4">
+
+            <h2 class="mb-4">
+                Apply for Internship
+            </h2>
+
+            <form asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="All"
+                     class="text-danger">
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="StudentId"
+                           class="form-label">
+                        Student ID
+                    </label>
+
+                    <input asp-for="StudentId"
+                           type="number"
+                           class="form-control" />
+
+                    <span asp-validation-for="StudentId"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="InternshipId"
+                           class="form-label">
+                        Internship ID
+                    </label>
+
+                    <input asp-for="InternshipId"
+                           type="number"
+                           class="form-control" />
+
+                    <span asp-validation-for="InternshipId"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label asp-for="Date"
+                           class="form-label">
+                    </label>
+
+                    <input asp-for="Date"
+                           type="date"
+                           class="form-control" />
+
+                    <span asp-validation-for="Date"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <input type="hidden"
+                       asp-for="Status"
+                       value="Pending" />
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Submit Application
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
