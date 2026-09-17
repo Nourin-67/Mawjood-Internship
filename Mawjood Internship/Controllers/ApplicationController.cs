@@ -2,29 +2,131 @@
 using BLogicLayer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 namespace Mawjood_Internship.Controllers
 {
     [Authorize]
     public class ApplicationController : Controller
     {
         private readonly IApplicationService _applicationService;
+        private readonly IApplicationWorkflowService
+            _workflowService;
+        private readonly IStudentService _studentService;
+
         public ApplicationController(
-            IApplicationService applicationService)
+            IApplicationService applicationService,
+            IApplicationWorkflowService workflowService,
+            IStudentService studentService)
         {
             _applicationService = applicationService;
+            _workflowService = workflowService;
+            _studentService = studentService;
         }
 
-        // GET: Application
+        // ================================
+        // ADMIN APPLICATIONS
+        // ================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var applications =
-                await _applicationService.GetAll();
+                await _workflowService.GetAllAsync();
 
             return View(applications);
         }
 
-        // GET: Application/Details/5
+        // ================================
+        // STUDENT MY APPLICATIONS
+        // ================================
+
+        [Authorize(Roles = "Student")]
+        [HttpGet]
+        public async Task<IActionResult> MyApplications()
+        {
+            var email = User.Identity?.Name;
+
+            if (string.IsNullOrWhiteSpace(email))
+                return RedirectToAction(
+                    "Login",
+                    "Account");
+
+            var students =
+                await _studentService.GetAll();
+
+            var student =
+                students.FirstOrDefault(x =>
+                    x.Email.Equals(
+                        email,
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (student == null)
+                return NotFound();
+
+            var applications =
+                await _workflowService
+                    .GetForStudentAsync(student.Id);
+
+            return View(applications);
+        }
+
+        // ================================
+        // STUDENT APPLY
+        // ================================
+
+        [Authorize(Roles = "Student")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Apply(
+            int internshipId)
+        {
+            var email = User.Identity?.Name;
+
+            if (string.IsNullOrWhiteSpace(email))
+                return RedirectToAction(
+                    "Login",
+                    "Account");
+
+            var students =
+                await _studentService.GetAll();
+
+            var student =
+                students.FirstOrDefault(x =>
+                    x.Email.Equals(
+                        email,
+                        StringComparison.OrdinalIgnoreCase));
+
+            if (student == null)
+                return NotFound();
+
+            var result =
+                await _workflowService.ApplyAsync(
+                    student.Id,
+                    internshipId);
+
+            if (!result.Succeeded)
+            {
+                TempData["Error"] = result.Error;
+
+                return RedirectToAction(
+                    "Index",
+                    "Internship");
+            }
+
+            TempData["Success"] =
+                "Application submitted successfully.";
+
+            return RedirectToAction(
+                "MyApplications");
+        }
+
+        // ================================
+        // ADMIN DETAILS
+        // ================================
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var application =
@@ -36,14 +138,17 @@ namespace Mawjood_Internship.Controllers
             return View(application);
         }
 
-        // GET: Application/Create
+        // ================================
+        // ADMIN CREATE
+        // ================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Application/Create
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -58,8 +163,12 @@ namespace Mawjood_Internship.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Application/Edit/5
+        // ================================
+        // ADMIN EDIT
+        // ================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var application =
@@ -71,11 +180,9 @@ namespace Mawjood_Internship.Controllers
             return View(application);
         }
 
-        // POST: Application/Edit/5
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-       
         public async Task<IActionResult> Edit(
             int id,
             ApplicationViewModel model)
@@ -91,8 +198,12 @@ namespace Mawjood_Internship.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Application/Delete/5
+        // ================================
+        // ADMIN DELETE
+        // ================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var application =
@@ -104,11 +215,11 @@ namespace Mawjood_Internship.Controllers
             return View(application);
         }
 
-        // POST: Application/Delete/5
         [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(
+            int id)
         {
             var deleted =
                 await _applicationService.Delete(id);
@@ -119,14 +230,38 @@ namespace Mawjood_Internship.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // POST: Application/Reject/5
+        // ================================
+        // ADMIN ACCEPT
+        // ================================
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Accept(int id)
+        {
+            var accepted =
+                await _workflowService.AcceptAsync(id);
+
+            if (!accepted)
+                return NotFound();
+
+            TempData["Success"] =
+                "Application accepted successfully.";
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // ================================
+        // ADMIN REJECT
+        // ================================
+
         [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Reject(int id)
         {
             var rejected =
-                await _applicationService.Reject(id);
+                await _workflowService.RejectAsync(id);
 
             if (!rejected)
                 return NotFound();

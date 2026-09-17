@@ -2,28 +2,81 @@
 using BLogicLayer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 namespace Mawjood_Internship.Controllers
 {
     [Authorize]
     public class InternshipController : Controller
     {
         private readonly IInternshipService _internshipService;
+        private readonly IInternshipRecommendationService
+            _recommendationService;
+
         public InternshipController(
-            IInternshipService internshipService)
+            IInternshipService internshipService,
+            IInternshipRecommendationService recommendationService)
         {
             _internshipService = internshipService;
+            _recommendationService = recommendationService;
         }
 
-        // GET: Internship
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (User.IsInRole("Student"))
+            {
+                var email = User.Identity?.Name;
+
+                if (string.IsNullOrWhiteSpace(email))
+                    return RedirectToAction(
+                        "Login",
+                        "Account");
+
+                var studentService =
+                    HttpContext.RequestServices
+                        .GetRequiredService<IStudentService>();
+
+                var students =
+                    await studentService.GetAll();
+
+                var student =
+                    students.FirstOrDefault(x =>
+                        x.Email.Equals(
+                            email,
+                            StringComparison.OrdinalIgnoreCase));
+
+                if (student == null)
+                    return NotFound();
+
+                var browse =
+                    await _recommendationService
+                        .GetForStudentAsync(student.Id);
+
+                return View(browse);
+            }
+
             var internships =
                 await _internshipService.GetAll();
 
-            return View(internships);
+            var adminBrowse =
+                new InternshipBrowseViewModel
+                {
+                    AllInternships =
+                        internships.Select(x =>
+                            new RecommendedInternshipViewModel
+                            {
+                                Id = x.Id,
+                                Title = x.Title,
+                                Location = x.Location,
+                                CompanyName =
+                                    x.CompanyName
+                            }).ToList()
+                };
+
+            return View(adminBrowse);
         }
 
-        // GET: Internship/Details/5
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var internship =
@@ -35,17 +88,16 @@ namespace Mawjood_Internship.Controllers
             return View(internship);
         }
 
-        // GET: Internship/Create
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Internship/Create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(
             InternshipViewModel model)
         {
@@ -57,8 +109,8 @@ namespace Mawjood_Internship.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Internship/Edit/5
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var internship =
@@ -70,10 +122,9 @@ namespace Mawjood_Internship.Controllers
             return View(internship);
         }
 
-        // POST: Internship/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(
             int id,
             InternshipViewModel model)
@@ -89,8 +140,8 @@ namespace Mawjood_Internship.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Internship/Delete/5
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var internship =
@@ -102,11 +153,11 @@ namespace Mawjood_Internship.Controllers
             return View(internship);
         }
 
-        // POST: Internship/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(
+            int id)
         {
             var deleted =
                 await _internshipService.Delete(id);
