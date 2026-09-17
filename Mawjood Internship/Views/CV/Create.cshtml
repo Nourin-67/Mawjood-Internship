@@ -1,1074 +1,333 @@
-﻿
-
-@* 
-@model BLogicLayer.ViewModels.CVViewModel
+﻿@model BLogicLayer.ViewModels.CVViewModel
 
 @{
-    ViewData["Title"] = "Create CV";
+    ViewData["Title"] = "Create / Edit CV";
 }
 
-<style>
+<div class="container py-5">
 
-    .cv-create-page {
-        min-height: 85vh;
-        background: #f8f9fa;
-        padding: 50px 15px;
-    }
+    <div class="row justify-content-center">
 
-    .cv-create-box {
-        max-width: 850px;
-        margin: auto;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
+        <div class="col-lg-9">
 
-    .cv-title {
-        text-align: center;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
+            <div class="card shadow-sm border-0">
 
-    .cv-subtitle {
-        text-align: center;
-        color: #777;
-        margin-bottom: 35px;
-    }
+                <div class="card-body p-5">
 
-    .section-title {
-        font-weight: 700;
-        margin-top: 30px;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #eee;
-    }
+                    <h2 class="fw-bold mb-4">
+                        Create / Edit My CV
+                    </h2>
 
-    .form-label {
-        font-weight: 600;
-    }
+                    <form asp-action="SaveInternalCV"
+                          method="post">
 
-    textarea {
-        resize: vertical;
-    }
+                        @Html.AntiForgeryToken()
 
-    .or-section {
-        text-align: center;
-        margin: 35px 0 20px;
-        color: #888;
-    }
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3">
+                        </div>
 
-</style>
+                        <h4 class="border-bottom pb-2 mb-4">
+                            Personal Information
+                        </h4>
 
+                        <div class="row">
 
-<div class="cv-create-page">
+                            <div class="col-md-6 mb-3">
 
-    <div class="cv-create-box">
+                                <label asp-for="FName"
+                                       class="form-label">
+                                    First Name
+                                </label>
 
+                                <input asp-for="FName"
+                                       class="form-control"
+                                       readonly />
 
-        <!-- ========================= -->
-        <!-- TITLE -->
-        <!-- ========================= -->
+                            </div>
 
-        <h2 class="cv-title">
-            Create Your CV
-        </h2>
+                            <div class="col-md-6 mb-3">
 
-        <p class="cv-subtitle">
-            Create a professional CV and increase your internship opportunities.
-        </p>
+                                <label asp-for="LName"
+                                       class="form-label">
+                                    Last Name
+                                </label>
 
+                                <input asp-for="LName"
+                                       class="form-control"
+                                       readonly />
 
-        <!-- ========================= -->
-        <!-- VALIDATION -->
-        <!-- ========================= -->
+                            </div>
 
-        <div asp-validation-summary="ModelOnly"
-             class="text-danger mb-3">
-        </div>
+                            <div class="col-md-12 mb-3">
 
+                                <label asp-for="Email"
+                                       class="form-label">
+                                    Email
+                                </label>
 
-        <!-- ========================= -->
-        <!-- CREATE CV FORM -->
-        <!-- ========================= -->
+                                <input asp-for="Email"
+                                       class="form-control"
+                                       readonly />
 
-        <form asp-action="Create"
-              method="post">
+                            </div>
 
-            @Html.AntiForgeryToken()
+                        </div>
 
+                        <h4 class="border-bottom pb-2 mb-4 mt-4">
+                            Education
+                        </h4>
 
-            <!-- ========================= -->
-            <!-- PERSONAL INFORMATION -->
-            <!-- ========================= -->
+                        <div class="row">
 
-            <h4 class="section-title">
-                Personal Information
-            </h4>
+                            <div class="col-md-6 mb-3">
 
+                                <label asp-for="University"
+                                       class="form-label">
+                                    University
+                                </label>
 
-            <div class="row">
+                                <input asp-for="University"
+                                       class="form-control" />
 
+                                <span asp-validation-for="University"
+                                      class="text-danger">
+                                </span>
 
-                <!-- First Name -->
+                            </div>
 
-                <div class="col-md-6 mb-3">
+                            <div class="col-md-6 mb-3">
 
-                    <label asp-for="FName"
-                           class="form-label">
+                                <label asp-for="Major"
+                                       class="form-label">
+                                    Major
+                                </label>
 
-                        First Name
+                                <input asp-for="Major"
+                                       class="form-control" />
 
-                    </label>
+                                <span asp-validation-for="Major"
+                                      class="text-danger">
+                                </span>
 
-                    <input asp-for="FName"
-                           class="form-control"
-                           placeholder="Enter your first name" />
+                            </div>
 
-                    <span asp-validation-for="FName"
-                          class="text-danger">
-                    </span>
+                            <div class="col-md-6 mb-3">
 
-                </div>
+                                <label asp-for="AcademicYear"
+                                       class="form-label">
+                                    Academic Year
+                                </label>
 
+                                <select asp-for="AcademicYear"
+                                        class="form-select">
 
-                <!-- Last Name -->
+                                    <option value="">
+                                        Select Year
+                                    </option>
 
-                <div class="col-md-6 mb-3">
+                                    <option value="1">
+                                        1
+                                    </option>
 
-                    <label asp-for="LName"
-                           class="form-label">
+                                    <option value="2">
+                                        2
+                                    </option>
 
-                        Last Name
+                                    <option value="3">
+                                        3
+                                    </option>
 
-                    </label>
+                                    <option value="4">
+                                        4
+                                    </option>
 
-                    <input asp-for="LName"
-                           class="form-control"
-                           placeholder="Enter your last name" />
+                                    <option value="5">
+                                        5
+                                    </option>
 
-                    <span asp-validation-for="LName"
-                          class="text-danger">
-                    </span>
+                                </select>
 
-                </div>
+                                <span asp-validation-for="AcademicYear"
+                                      class="text-danger">
+                                </span>
 
+                            </div>
 
-                <!-- Email -->
+                            <div class="col-md-6 mb-3">
 
-                <div class="col-md-12 mb-3">
+                                <label asp-for="Education"
+                                       class="form-label">
+                                    Education
+                                </label>
 
-                    <label asp-for="Email"
-                           class="form-label">
+                                <input asp-for="Education"
+                                       class="form-control" />
 
-                        Email
+                                <span asp-validation-for="Education"
+                                      class="text-danger">
+                                </span>
 
-                    </label>
+                            </div>
 
-                    <input asp-for="Email"
-                           type="email"
-                           class="form-control"
-                           placeholder="example@email.com" />
+                        </div>
 
-                    <span asp-validation-for="Email"
-                          class="text-danger">
-                    </span>
+                        <h4 class="border-bottom pb-2 mb-4 mt-4">
+                            Location
+                        </h4>
 
-                </div>
+                        <div class="row">
 
-            </div>
+                            <div class="col-md-6 mb-3">
 
+                                <label asp-for="City"
+                                       class="form-label">
+                                    City
+                                </label>
 
-            <!-- ========================= -->
-            <!-- EDUCATION -->
-            <!-- ========================= -->
+                                <input asp-for="City"
+                                       class="form-control" />
 
-            <h4 class="section-title">
-                Education
-            </h4>
+                            </div>
 
+                            <div class="col-md-6 mb-3">
 
-            <div class="row">
+                                <label asp-for="Government"
+                                       class="form-label">
+                                    Government
+                                </label>
 
+                                <input asp-for="Government"
+                                       class="form-control" />
 
-                <!-- University -->
+                            </div>
 
-                <div class="col-md-6 mb-3">
+                        </div>
 
-                    <label asp-for="University"
-                           class="form-label">
+                        <h4 class="border-bottom pb-2 mb-4 mt-4">
+                            CV Information
+                        </h4>
 
-                        University
+                        <div class="mb-3">
 
-                    </label>
+                            <label asp-for="AboutMe"
+                                   class="form-label">
+                                About Me
+                            </label>
 
-                    <input asp-for="University"
-                           class="form-control"
-                           placeholder="Enter your university" />
+                            <textarea asp-for="AboutMe"
+                                      class="form-control"
+                                      rows="4"></textarea>
 
-                    <span asp-validation-for="University"
-                          class="text-danger">
-                    </span>
+                            <span asp-validation-for="AboutMe"
+                                  class="text-danger">
+                            </span>
 
-                </div>
+                        </div>
 
+                        <div class="mb-3">
 
-                <!-- Major -->
+                            <label asp-for="Skills"
+                                   class="form-label">
+                                Skills
+                            </label>
 
-                <div class="col-md-6 mb-3">
+                            <textarea asp-for="Skills"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="C#, SQL, HTML, CSS"></textarea>
 
-                    <label asp-for="Major"
-                           class="form-label">
+                            <small class="text-muted">
+                                Separate skills using commas.
+                            </small>
 
-                        Major
+                            <span asp-validation-for="Skills"
+                                  class="text-danger">
+                            </span>
 
-                    </label>
+                        </div>
 
-                    <input asp-for="Major"
-                           class="form-control"
-                           placeholder="Enter your major" />
+                        <div class="mb-3">
 
-                    <span asp-validation-for="Major"
-                          class="text-danger">
-                    </span>
+                            <label asp-for="Courses"
+                                   class="form-label">
+                                Courses & Certificates
+                            </label>
 
-                </div>
+                            <textarea asp-for="Courses"
+                                      class="form-control"
+                                      rows="4"></textarea>
 
+                            <span asp-validation-for="Courses"
+                                  class="text-danger">
+                            </span>
 
-                <!-- Academic Year -->
+                        </div>
 
-                <div class="col-md-6 mb-3">
+                        <div class="mb-3">
 
-                    <label asp-for="AcademicYear"
-                           class="form-label">
+                            <label asp-for="Experience"
+                                   class="form-label">
+                                Experience
+                            </label>
 
-                        Academic Year
+                            <textarea asp-for="Experience"
+                                      class="form-control"
+                                      rows="4"></textarea>
 
-                    </label>
+                            <span asp-validation-for="Experience"
+                                  class="text-danger">
+                            </span>
 
-                    <select asp-for="AcademicYear"
-                            class="form-select">
+                        </div>
 
-                        <option value="">
-                            Select Academic Year
-                        </option>
+                        <button type="submit"
+                                class="btn btn-success w-100">
+                            Save CV
+                        </button>
 
-                        <option value="1">
-                            First Year
-                        </option>
+                    </form>
 
-                        <option value="2">
-                            Second Year
-                        </option>
+                    <hr class="my-5" />
 
-                        <option value="3">
-                            Third Year
-                        </option>
+                    <h4>
+                        External CV
+                    </h4>
 
-                        <option value="4">
-                            Fourth Year
-                        </option>
+                    <p class="text-muted">
+                        You can also save a link to your CV.
+                    </p>
 
-                        <option value="5">
-                            Fifth Year
-                        </option>
+                    <form asp-action="SaveExternalCV"
+                          method="post">
 
-                    </select>
+                        @Html.AntiForgeryToken()
 
-                    <span asp-validation-for="AcademicYear"
-                          class="text-danger">
-                    </span>
+                        <div class="input-group">
 
-                </div>
+                            <input type="url"
+                                   name="cvLink"
+                                   class="form-control"
+                                   placeholder="https://example.com/my-cv"
+                                   required />
 
+                            <button type="submit"
+                                    class="btn btn-primary">
+                                Save CV Link
+                            </button>
 
-                <!-- Education -->
+                        </div>
 
-                <div class="col-md-6 mb-3">
+                    </form>
 
-                    <label asp-for="Education"
-                           class="form-label">
-
-                        Education
-
-                    </label>
-
-                    <input asp-for="Education"
-                           class="form-control"
-                           placeholder="Example: B.Sc. Artificial Intelligence" />
-
-                    <span asp-validation-for="Education"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ========================= -->
-            <!-- LOCATION -->
-            <!-- ========================= -->
-
-            <h4 class="section-title">
-                Location
-            </h4>
-
-
-            <div class="row">
-
-
-                <!-- City -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="City"
-                           class="form-label">
-
-                        City
-
-                    </label>
-
-                    <input asp-for="City"
-                           class="form-control"
-                           placeholder="Enter your city" />
-
-                    <span asp-validation-for="City"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- Government -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="Government"
-                           class="form-label">
-
-                        Government
-
-                    </label>
-
-                    <input asp-for="Government"
-                           class="form-control"
-                           placeholder="Enter your government" />
-
-                    <span asp-validation-for="Government"
-                          class="text-danger">
-                    </span>
+                    <a asp-action="Index"
+                       class="btn btn-secondary mt-3 w-100">
+                        Back to My CV
+                    </a>
 
                 </div>
 
             </div>
-
-
-            <!-- ========================= -->
-            <!-- ABOUT ME -->
-            <!-- ========================= -->
-
-            <h4 class="section-title">
-                About Me
-            </h4>
-
-
-            <div class="mb-3">
-
-                <label asp-for="AboutMe"
-                       class="form-label">
-
-                    About Me
-
-                </label>
-
-                <textarea asp-for="AboutMe"
-                          class="form-control"
-                          rows="5"
-                          placeholder="Write a short description about yourself, your interests and your career goals..."></textarea>
-
-                <span asp-validation-for="AboutMe"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- ========================= -->
-            <!-- SKILLS -->
-            <!-- ========================= -->
-
-            <h4 class="section-title">
-                Skills
-            </h4>
-
-
-            <div class="mb-3">
-
-                <label asp-for="Skills"
-                       class="form-label">
-
-                    Skills
-
-                </label>
-
-                <textarea asp-for="Skills"
-                          class="form-control"
-                          rows="5"
-                          placeholder="Example:
-                C#
-                Python
-                SQL
-                Cyber Security
-                Machine Learning"></textarea>
-
-                <span asp-validation-for="Skills"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- ========================= -->
-            <!-- COURSES -->
-            <!-- ========================= -->
-
-            <h4 class="section-title">
-                Courses & Certificates
-            </h4>
-
-
-            <div class="mb-3">
-
-                <label asp-for="Courses"
-                       class="form-label">
-
-                    Courses & Certificates
-
-                </label>
-
-                <textarea asp-for="Courses"
-                          class="form-control"
-                          rows="5"
-                          placeholder="Example:
-                Python for Data Science - DataCamp
-                SQL Fundamentals
-                Machine Learning Course"></textarea>
-
-                <span asp-validation-for="Courses"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- ========================= -->
-            <!-- EXPERIENCE -->
-            <!-- ========================= -->
-
-            <h4 class="section-title">
-                Experience
-            </h4>
-
-
-            <div class="mb-3">
-
-                <label asp-for="Experience"
-                       class="form-label">
-
-                    Experience
-
-                </label>
-
-                <textarea asp-for="Experience"
-                          class="form-control"
-                          rows="6"
-                          placeholder="Write your internships, projects, volunteer work or previous experience..."></textarea>
-
-                <span asp-validation-for="Experience"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- ========================= -->
-            <!-- CREATE BUTTON -->
-            <!-- ========================= -->
-
-            <div class="d-grid mt-4">
-
-                <button type="submit"
-                        class="btn btn-primary btn-lg">
-
-                    Create My CV
-
-                </button>
-
-            </div>
-
-        </form>
-
-
-        <!-- ========================= -->
-        <!-- EXISTING CV LINK OPTION -->
-        <!-- ========================= -->
-
-        <div class="or-section">
-
-            <span>OR</span>
-
-        </div>
-
-
-        <div class="border rounded p-4 text-center">
-
-            <h5 class="fw-bold mb-2">
-
-                Already have a CV?
-
-            </h5>
-
-            <p class="text-muted">
-
-                If you already have a CV online,
-                you can save its link instead.
-
-            </p>
-
-
-            <a asp-action="Index"
-               class="btn btn-outline-primary">
-
-                Use My CV Link
-
-            </a>
-
-        </div>
-
-
-        <!-- ========================= -->
-        <!-- BACK -->
-        <!-- ========================= -->
-
-        <div class="text-center mt-4">
-
-            <a asp-action="Index"
-               class="text-decoration-none">
-
-                ← Back to My CV
-
-            </a>
-
-        </div>
-
-
-    </div>
-
-</div>
-
-
-<!-- ========================= -->
-<!-- VALIDATION SCRIPTS -->
-<!-- ========================= -->
-@section Scripts {
-
-    <partial name="_ValidationScriptsPartial" />
-
-} *@
-
-
-
-        @model BLogicLayer.ViewModels.CVViewModel
-
-@{
-    ViewData["Title"] = "Create CV";
-}
-
-<style>
-
-    .cv-create-page {
-        min-height: 85vh;
-        background: #f8f9fa;
-        padding: 50px 15px;
-    }
-
-    .cv-create-box {
-        max-width: 850px;
-        margin: auto;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    }
-
-    .cv-title {
-        text-align: center;
-        font-weight: 700;
-        margin-bottom: 10px;
-    }
-
-    .cv-subtitle {
-        text-align: center;
-        color: #777;
-        margin-bottom: 35px;
-    }
-
-    .section-title {
-        font-weight: 700;
-        margin-top: 30px;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 2px solid #eee;
-    }
-
-    .form-label {
-        font-weight: 600;
-    }
-
-    textarea {
-        resize: vertical;
-    }
-
-    .or-section {
-        text-align: center;
-        margin: 35px 0 20px;
-        color: #888;
-    }
-
-</style>
-
-
-<div class="cv-create-page">
-
-    <div class="cv-create-box">
-
-        <!-- TITLE -->
-
-        <h2 class="cv-title">
-            Create Your CV
-        </h2>
-
-        <p class="cv-subtitle">
-            Create a professional CV and increase your internship opportunities.
-        </p>
-
-
-        <!-- VALIDATION -->
-
-        <div asp-validation-summary="ModelOnly"
-             class="text-danger mb-3">
-        </div>
-
-
-        <!-- FORM -->
-
-        <form asp-action="SaveInternalCV"
-              method="post">
-
-            @Html.AntiForgeryToken()
-
-
-            <!-- PERSONAL INFORMATION -->
-
-            <h4 class="section-title">
-                Personal Information
-            </h4>
-
-            <div class="row">
-
-                <!-- FIRST NAME -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="FName"
-                           class="form-label">
-                        First Name
-                    </label>
-
-                    <input asp-for="FName"
-                           class="form-control"
-                           placeholder="Enter your first name" />
-
-                    <span asp-validation-for="FName"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- LAST NAME -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="LName"
-                           class="form-label">
-                        Last Name
-                    </label>
-
-                    <input asp-for="LName"
-                           class="form-control"
-                           placeholder="Enter your last name" />
-
-                    <span asp-validation-for="LName"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- EMAIL -->
-
-                <div class="col-md-12 mb-3">
-
-                    <label asp-for="Email"
-                           class="form-label">
-                        Email
-                    </label>
-
-                    <input asp-for="Email"
-                           type="email"
-                           class="form-control"
-                           placeholder="example@email.com" />
-
-                    <span asp-validation-for="Email"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- EDUCATION -->
-
-            <h4 class="section-title">
-                Education
-            </h4>
-
-            <div class="row">
-
-                <!-- UNIVERSITY -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="University"
-                           class="form-label">
-                        University
-                    </label>
-
-                    <input asp-for="University"
-                           class="form-control"
-                           placeholder="Enter your university" />
-
-                    <span asp-validation-for="University"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- MAJOR -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="Major"
-                           class="form-label">
-                        Major
-                    </label>
-
-                    <input asp-for="Major"
-                           class="form-control"
-                           placeholder="Enter your major" />
-
-                    <span asp-validation-for="Major"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- ACADEMIC YEAR -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="AcademicYear"
-                           class="form-label">
-                        Academic Year
-                    </label>
-
-                    <select asp-for="AcademicYear"
-                            class="form-select">
-
-                        <option value="">
-                            Select Academic Year
-                        </option>
-
-                        <option value="1">
-                            First Year
-                        </option>
-
-                        <option value="2">
-                            Second Year
-                        </option>
-
-                        <option value="3">
-                            Third Year
-                        </option>
-
-                        <option value="4">
-                            Fourth Year
-                        </option>
-
-                        <option value="5">
-                            Fifth Year
-                        </option>
-
-                    </select>
-
-                    <span asp-validation-for="AcademicYear"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- EDUCATION -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="Education"
-                           class="form-label">
-                        Education
-                    </label>
-
-                    <input asp-for="Education"
-                           class="form-control"
-                           placeholder="Example: B.Sc. Artificial Intelligence" />
-
-                    <span asp-validation-for="Education"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- LOCATION -->
-
-            <h4 class="section-title">
-                Location
-            </h4>
-
-            <div class="row">
-
-                <!-- CITY -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="City"
-                           class="form-label">
-                        City
-                    </label>
-
-                    <input asp-for="City"
-                           class="form-control"
-                           placeholder="Enter your city" />
-
-                    <span asp-validation-for="City"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- GOVERNMENT -->
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="Government"
-                           class="form-label">
-                        Government
-                    </label>
-
-                    <input asp-for="Government"
-                           class="form-control"
-                           placeholder="Enter your government" />
-
-                    <span asp-validation-for="Government"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <!-- ABOUT ME -->
-
-            <h4 class="section-title">
-                About Me
-            </h4>
-
-            <div class="mb-3">
-
-                <label asp-for="AboutMe"
-                       class="form-label">
-                    About Me
-                </label>
-
-                <textarea asp-for="AboutMe"
-                          class="form-control"
-                          rows="5"
-                          placeholder="Write a short description about yourself, your interests and your career goals..."></textarea>
-
-                <span asp-validation-for="AboutMe"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- SKILLS -->
-
-            <h4 class="section-title">
-                Skills
-            </h4>
-
-            <div class="mb-3">
-
-                <label asp-for="Skills"
-                       class="form-label">
-                    Skills
-                </label>
-
-                <textarea asp-for="Skills"
-                          class="form-control"
-                          rows="5"
-                          placeholder="Example:
-C#
-Python
-SQL
-Cyber Security
-Machine Learning"></textarea>
-
-                <span asp-validation-for="Skills"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- COURSES -->
-
-            <h4 class="section-title">
-                Courses & Certificates
-            </h4>
-
-            <div class="mb-3">
-
-                <label asp-for="Courses"
-                       class="form-label">
-                    Courses & Certificates
-                </label>
-
-                <textarea asp-for="Courses"
-                          class="form-control"
-                          rows="5"
-                          placeholder="Example:
-Python for Data Science - DataCamp
-SQL Fundamentals
-Machine Learning Course"></textarea>
-
-                <span asp-validation-for="Courses"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- EXPERIENCE -->
-
-            <h4 class="section-title">
-                Experience
-            </h4>
-
-            <div class="mb-3">
-
-                <label asp-for="Experience"
-                       class="form-label">
-                    Experience
-                </label>
-
-                <textarea asp-for="Experience"
-                          class="form-control"
-                          rows="6"
-                          placeholder="Write your internships, projects, volunteer work or previous experience..."></textarea>
-
-                <span asp-validation-for="Experience"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-
-            <!-- CREATE BUTTON -->
-
-            <div class="d-grid mt-4">
-
-                <button type="submit"
-                        class="btn btn-primary btn-lg">
-
-                    Create My CV
-
-                </button>
-
-            </div>
-
-        </form>
-
-
-        <!-- OR -->
-
-        <div class="or-section">
-            <span>OR</span>
-        </div>
-
-
-        <!-- EXISTING CV LINK -->
-
-        <div class="border rounded p-4 text-center">
-
-            <h5 class="fw-bold mb-2">
-                Already have a CV?
-            </h5>
-
-            <p class="text-muted">
-                If you already have a CV online,
-                you can save its link instead.
-            </p>
-
-            <a asp-action="Index"
-               class="btn btn-outline-primary">
-
-                Use My CV Link
-
-            </a>
-
-        </div>
-
-
-        <!-- BACK -->
-
-        <div class="text-center mt-4">
-
-            <a asp-action="Index"
-               class="text-decoration-none">
-
-                ← Back to My CV
-
-            </a>
 
         </div>
 
@@ -1076,9 +335,7 @@ Machine Learning Course"></textarea>
 
 </div>
 
-
-@section Scripts {
-
+@section Scripts
+{
     <partial name="_ValidationScriptsPartial" />
-
 }

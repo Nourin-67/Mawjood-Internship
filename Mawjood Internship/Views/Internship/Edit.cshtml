@@ -1,98 +1,19 @@
-﻿@* @using BLogicLayer.ViewModels
-@model InternshipViewModel
+﻿@model BLogicLayer.ViewModels.InternshipViewModel
 
 @{
     ViewData["Title"] = "Edit Internship";
-}
 
-<div class="row justify-content-center">
-    <div class="col-md-7">
-
-        <div class="card shadow p-4">
-
-            <h2 class="mb-4">
-                Edit Internship
-            </h2>
-
-            <form asp-action="Edit"
-                  asp-route-id="@Model.Id"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-                <input type="hidden" asp-for="Id" />
-
-                <div asp-validation-summary="All"
-                     class="text-danger">
-                </div>
-
-                <div class="mb-3">
-
-                    <label asp-for="Title"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Title"
-                           class="form-control" />
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label asp-for="Location"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Location"
-                           class="form-control" />
-
-                </div>
-
-                <div class="mb-3">
-
-                    <label asp-for="CompanyId"
-                           class="form-label">
-                        Company ID
-                    </label>
-
-                    <input asp-for="CompanyId"
-                           type="number"
-                           class="form-control" />
-
-                </div>
-
-                <button type="submit"
-                        class="btn btn-warning">
-                    Save Changes
-                </button>
-
-                <a asp-action="Index"
-                   class="btn btn-secondary">
-                    Cancel
-                </a>
-
-            </form>
-
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-} *@
-
-
-@model BLogicLayer.ViewModels.InternshipViewModel
-
-@{
-    ViewData["Title"] = "Edit Internship";
+    var skills =
+        ViewBag.Skills as List<BLogicLayer.ViewModels.SkillViewModel>
+        ?? new List<BLogicLayer.ViewModels.SkillViewModel>();
 }
 
 <div class="container mt-4">
 
     <h2>Edit Internship</h2>
 
-    <form asp-action="Edit" method="post">
+    <form asp-action="Edit"
+          method="post">
 
         @Html.AntiForgeryToken()
 
@@ -100,17 +21,22 @@
                asp-for="Id" />
 
         <div asp-validation-summary="ModelOnly"
-             class="text-danger">
+             class="text-danger mb-3">
         </div>
 
         <div class="mb-3">
 
             <label asp-for="Title"
                    class="form-label">
+                Title
             </label>
 
             <input asp-for="Title"
                    class="form-control" />
+
+            <span asp-validation-for="Title"
+                  class="text-danger">
+            </span>
 
         </div>
 
@@ -118,10 +44,15 @@
 
             <label asp-for="Location"
                    class="form-label">
+                Location
             </label>
 
             <input asp-for="Location"
                    class="form-control" />
+
+            <span asp-validation-for="Location"
+                  class="text-danger">
+            </span>
 
         </div>
 
@@ -129,11 +60,79 @@
 
             <label asp-for="CompanyId"
                    class="form-label">
-                Company
+                Company ID
             </label>
 
             <input asp-for="CompanyId"
                    class="form-control" />
+
+            <span asp-validation-for="CompanyId"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Skills
+            </label>
+
+            @foreach (var skill in skills)
+            {
+                var selected =
+                    Model.SkillIds.Contains(skill.Id);
+
+                <div class="form-check">
+
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="SkillIds"
+                           value="@skill.Id"
+                           id="skill_@skill.Id"
+                           checked="@selected" />
+
+                    <label class="form-check-label"
+                           for="skill_@skill.Id">
+
+                        @skill.Name
+
+                    </label>
+
+                </div>
+            }
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Required Skills
+            </label>
+
+            @foreach (var skill in skills)
+            {
+                var selected =
+                    Model.RequiredSkillIds.Contains(skill.Id);
+
+                <div class="form-check">
+
+                    <input class="form-check-input"
+                           type="checkbox"
+                           name="RequiredSkillIds"
+                           value="@skill.Id"
+                           id="required_@skill.Id"
+                           checked="@selected" />
+
+                    <label class="form-check-label"
+                           for="required_@skill.Id">
+
+                        @skill.Name
+
+                    </label>
+
+                </div>
+            }
 
         </div>
 
@@ -150,3 +149,8 @@
     </form>
 
 </div>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
