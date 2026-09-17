@@ -1,190 +1,212 @@
-﻿@* @using BLogicLayer.ViewModels
-@model StudentViewModel
+﻿@model BLogicLayer.ViewModels.StudentViewModel
 
 @{
     ViewData["Title"] = "Edit Student";
 }
 
-<div class="row justify-content-center">
+<div class="container mw-container py-4">
 
-    <div class="col-md-8">
+    <div class="mw-card mw-form">
 
-        <div class="card shadow p-4">
+        <div class="mb-4">
+            <span class="mw-eyebrow">STUDENT MANAGEMENT</span>
+            <h1 class="mb-2">Edit Student</h1>
+            <p class="mw-muted mb-0">
+                Update the student's information.
+            </p>
+        </div>
 
-            <h2 class="mb-4">
-                Edit Student
-            </h2>
+        <form asp-controller="Student"
+              asp-action="Edit"
+              asp-route-id="@Model.Id"
+              method="post">
 
-            <form asp-action="Edit"
-                  asp-route-id="@Model.Id"
-                  method="post">
+            @Html.AntiForgeryToken()
 
-                @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
 
-                <input type="hidden"
-                       asp-for="Id" />
+            <div asp-validation-summary="ModelOnly"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
 
-                <div asp-validation-summary="All"
-                     class="text-danger">
+            <div class="row g-3">
+
+                <!-- First Name -->
+                <div class="col-md-6">
+                    <label asp-for="FName" class="form-label">
+                        First Name
+                    </label>
+
+                    <input asp-for="FName"
+                           class="form-control mw-input" />
+
+                    <span asp-validation-for="FName"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="row">
+                <!-- Last Name -->
+                <div class="col-md-6">
+                    <label asp-for="LName" class="form-label">
+                        Last Name
+                    </label>
 
-                    <div class="col-md-6 mb-3">
+                    <input asp-for="LName"
+                           class="form-control mw-input" />
 
-                        <label asp-for="FName"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="FName"
-                               class="form-control" />
-
-                        <span asp-validation-for="FName"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="LName"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="LName"
-                               class="form-control" />
-
-                        <span asp-validation-for="LName"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
+                    <span asp-validation-for="LName"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="Email"
-                           class="form-label">
+                <!-- Email -->
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label">
+                        Email
                     </label>
 
                     <input asp-for="Email"
-                           class="form-control" />
+                           type="email"
+                           class="form-control mw-input"
+                           autocomplete="email" />
 
                     <span asp-validation-for="Email"
-                          class="text-danger">
+                          class="text-danger small">
                     </span>
-
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="Password"
-                           class="form-label">
-                        New Password
+                <!-- Password -->
+                <div class="col-md-6">
+                    <label asp-for="Password" class="form-label">
+                        Password
+                        <span class="mw-muted">(optional)</span>
                     </label>
 
                     <input asp-for="Password"
-                           class="form-control"
+                           type="password"
+                           class="form-control mw-input"
+                           autocomplete="new-password"
                            placeholder="Leave empty to keep current password" />
 
+                    <span asp-validation-for="Password"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="University"
-                           class="form-label">
+                <!-- University -->
+                <div class="col-md-6">
+                    <label asp-for="University" class="form-label">
+                        University
                     </label>
 
                     <input asp-for="University"
-                           class="form-control" />
+                           class="form-control mw-input" />
 
+                    <span asp-validation-for="University"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="Major"
-                           class="form-label">
+                <!-- Major -->
+                <div class="col-md-6">
+                    <label asp-for="Major" class="form-label">
+                        Major
                     </label>
 
                     <input asp-for="Major"
-                           class="form-control" />
+                           class="form-control mw-input" />
 
+                    <span asp-validation-for="Major"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="Education"
-                           class="form-label">
+                <!-- Education -->
+                <div class="col-md-6">
+                    <label asp-for="Education" class="form-label">
+                        Education
                     </label>
 
                     <input asp-for="Education"
-                           class="form-control" />
+                           class="form-control mw-input" />
 
+                    <span asp-validation-for="Education"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="AcademicYear"
-                           class="form-label">
+                <!-- Academic Year -->
+                <div class="col-md-6">
+                    <label asp-for="AcademicYear" class="form-label">
+                        Academic Year
                     </label>
 
                     <input asp-for="AcademicYear"
                            type="number"
-                           class="form-control" />
+                           min="1"
+                           max="5"
+                           class="form-control mw-input" />
 
+                    <span asp-validation-for="AcademicYear"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="mb-3">
-
-                    <label asp-for="CV"
-                           class="form-label">
+                <!-- City -->
+                <div class="col-md-6">
+                    <label asp-for="City" class="form-label">
+                        City
                     </label>
 
-                    <input asp-for="CV"
-                           class="form-control" />
+                    <input asp-for="City"
+                           class="form-control mw-input" />
 
+                    <span asp-validation-for="City"
+                          class="text-danger small">
+                    </span>
                 </div>
 
-                <div class="row">
+                <!-- Government -->
+                <div class="col-md-6">
+                    <label asp-for="Government" class="form-label">
+                        Government
+                    </label>
 
-                    <div class="col-md-6 mb-3">
+                    <input asp-for="Government"
+                           class="form-control mw-input" />
 
-                        <label asp-for="City"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="City"
-                               class="form-control" />
-
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="Government"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="Government"
-                               class="form-control" />
-
-                    </div>
-
+                    <span asp-validation-for="Government"
+                          class="text-danger small">
+                    </span>
                 </div>
+
+            </div>
+
+            <div class="mw-actions-row mt-4">
 
                 <button type="submit"
-                        class="btn btn-warning">
+                        class="btn mw-btn mw-btn-primary">
+
+                    <span class="material-symbols-outlined">
+                        save
+                    </span>
+
                     Save Changes
+
                 </button>
 
-                <a asp-action="Index"
-                   class="btn btn-secondary">
+                <a asp-controller="Student"
+                   asp-action="Index"
+                   class="btn mw-btn mw-btn-outline">
+
                     Cancel
+
                 </a>
 
-            </form>
+            </div>
 
-        </div>
+        </form>
 
     </div>
 
@@ -192,115 +214,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
-
-
-@model BLogicLayer.ViewModels.StudentViewModel
-
-@{
-    ViewData["Title"] = "Edit Student";
-}
-
-<div class="container mt-4">
-
-    <h2>Edit Student</h2>
-
-    <form asp-action="Edit" method="post">
-
-        @Html.AntiForgeryToken()
-
-        <input type="hidden" asp-for="Id" />
-
-        <div asp-validation-summary="ModelOnly"
-             class="text-danger">
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="FName" class="form-label"></label>
-            <input asp-for="FName" class="form-control" />
-            <span asp-validation-for="FName"
-                  class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="LName" class="form-label"></label>
-            <input asp-for="LName" class="form-control" />
-            <span asp-validation-for="LName"
-                  class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Email" class="form-label"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email"
-                  class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="University" class="form-label"></label>
-            <input asp-for="University"
-                   class="form-control" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Major" class="form-label"></label>
-            <input asp-for="Major"
-                   class="form-control" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="AcademicYear"
-                   class="form-label">
-            </label>
-
-            <input asp-for="AcademicYear"
-                   type="number"
-                   class="form-control" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Education"
-                   class="form-label">
-            </label>
-
-            <input asp-for="Education"
-                   class="form-control" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="City"
-                   class="form-label">
-            </label>
-
-            <input asp-for="City"
-                   class="form-control" />
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="Government"
-                   class="form-label">
-            </label>
-
-            <input asp-for="Government"
-                   class="form-control" />
-        </div>
-
-        <button type="submit"
-                class="btn btn-primary">
-            Save Changes
-        </button>
-
-        <a asp-action="Index"
-           class="btn btn-secondary">
-            Back
-        </a>
-
-    </form>
-
-</div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
 }
