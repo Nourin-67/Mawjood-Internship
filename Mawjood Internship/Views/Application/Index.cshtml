@@ -1,138 +1,4 @@
-﻿@* @using BLogicLayer.ViewModels
-@model List<ApplicationViewModel>
-
-@{
-    ViewData["Title"] = "Applications";
-}
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-    <h2>Applications</h2>
-
-    <a asp-action="Create"
-       class="btn btn-primary">
-        Apply
-    </a>
-
-</div>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        No applications found.
-    </div>
-}
-else
-{
-    <table class="table table-bordered table-hover bg-white">
-
-        <thead class="table-dark">
-
-            <tr>
-                <th>ID</th>
-                <th>Student</th>
-                <th>Internship</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-
-        </thead>
-
-        <tbody>
-
-            @foreach (var application in Model)
-            {
-                <tr>
-
-                    <td>@application.Id</td>
-
-                    <td>
-                        @application.StudentName
-                    </td>
-
-                    <td>
-                        @application.InternshipTitle
-                    </td>
-
-                    <td>
-                        @application.Date.ToShortDateString()
-                    </td>
-
-                    <td>
-                        @if (application.Status == "Rejected")
-                        {
-                            <span class="badge bg-danger">
-                                Rejected
-                            </span>
-                        }
-                        else if (application.Status == "Accepted")
-                        {
-                            <span class="badge bg-success">
-                                Accepted
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="badge bg-warning text-dark">
-                                @application.Status
-                            </span>
-                        }
-                    </td>
-
-                    <td>
-
-                        <a asp-action="Details"
-                           asp-route-id="@application.Id"
-                           class="btn btn-info btn-sm">
-                            Details
-                        </a>
-
-                        @if (User.IsInRole("Admin"))
-                        {
-                            @if (application.Status != "Rejected")
-                            {
-                                <form asp-action="Reject"
-                                      asp-route-id="@application.Id"
-                                      method="post"
-                                      style="display:inline">
-
-                                    @Html.AntiForgeryToken()
-
-                                    <button type="submit"
-                                            class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to reject this application?');">
-                                        Reject
-                                    </button>
-
-                                </form>
-                            }
-
-                            <a asp-action="Edit"
-                               asp-route-id="@application.Id"
-                               class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-
-                            <a asp-action="Delete"
-                               asp-route-id="@application.Id"
-                               class="btn btn-danger btn-sm">
-                                Delete
-                            </a>
-                        }
-
-                    </td>
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-} *@
-
-
-@model List<BLogicLayer.ViewModels.ApplicationViewModel>
+﻿@model List<BLogicLayer.ViewModels.ApplicationWorkflowViewModel>
 
 @{
     ViewData["Title"] = "Applications";
@@ -140,50 +6,84 @@ else
 
 <div class="container mt-4">
 
-    <h2 class="mb-4">Applications</h2>
+    <h2 class="mb-4">
+        Applications
+    </h2>
 
-    <table class="table table-bordered table-hover">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
 
-        <thead class="table-dark">
+    <div class="table-responsive">
 
-            <tr>
-                <th>Student</th>
-                <th>Internship</th>
-                <th>Date</th>
-                <th>Status</th>
+        <table class="table table-bordered table-hover">
 
-                @if (User.IsInRole("Admin"))
-                {
-                    <th>Actions</th>
-                }
-            </tr>
+            <thead class="table-dark">
 
-        </thead>
-
-        <tbody>
-
-            @foreach (var application in Model)
-            {
                 <tr>
+                    <th>Student</th>
+                    <th>Email</th>
+                    <th>Internship</th>
+                    <th>Company</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
 
-                    <td>
-                        @application.StudentName
-                    </td>
+            </thead>
 
-                    <td>
-                        @application.InternshipTitle
-                    </td>
+            <tbody>
 
-                    <td>
-                        @application.Date.ToShortDateString()
-                    </td>
+                @foreach (var application in Model)
+                {
+                    <tr>
 
-                    <td>
-                        @application.Status
-                    </td>
+                        <td>
+                            @application.StudentName
+                        </td>
 
-                    @if (User.IsInRole("Admin"))
-                    {
+                        <td>
+                            @application.StudentEmail
+                        </td>
+
+                        <td>
+                            @application.InternshipTitle
+                        </td>
+
+                        <td>
+                            @application.CompanyName
+                        </td>
+
+                        <td>
+                            @application.Date.ToShortDateString()
+                        </td>
+
+                        <td>
+
+                            @if (application.Status == "Accepted")
+                            {
+                                <span class="badge bg-success">
+                                    Accepted
+                                </span>
+                            }
+                            else if (application.Status == "Rejected")
+                            {
+                                <span class="badge bg-danger">
+                                    Rejected
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">
+                                    Pending
+                                </span>
+                            }
+
+                        </td>
+
                         <td>
 
                             <a asp-action="Details"
@@ -192,12 +92,29 @@ else
                                 Details
                             </a>
 
+                            @if (application.Status != "Accepted")
+                            {
+                                <form asp-action="Accept"
+                                      asp-route-id="@application.Id"
+                                      method="post"
+                                      class="d-inline">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="btn btn-success btn-sm">
+                                        Accept
+                                    </button>
+
+                                </form>
+                            }
+
                             @if (application.Status != "Rejected")
                             {
                                 <form asp-action="Reject"
                                       asp-route-id="@application.Id"
                                       method="post"
-                                      style="display:inline">
+                                      class="d-inline">
 
                                     @Html.AntiForgeryToken()
 
@@ -210,13 +127,14 @@ else
                             }
 
                         </td>
-                    }
 
-                </tr>
-            }
+                    </tr>
+                }
 
-        </tbody>
+            </tbody>
 
-    </table>
+        </table>
+
+    </div>
 
 </div>
