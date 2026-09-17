@@ -1,19 +1,4 @@
-﻿//using BLogicLayer.ViewModels;
-//namespace BLogicLayer.Interfaces
-//{
-//    public interface IStudentService
-//    {
-//        Task<List<StudentViewModel>> GetAll();
-//        Task<StudentViewModel> GetById(int id);
-
-//        Task Add(StudentViewModel model);
-
-//        Task Update(StudentViewModel model);
-
-//        Task<bool> Delete(int id);
-//    }
-//}
-using BLogicLayer.ViewModels;
+﻿using BLogicLayer.ViewModels;
 
 namespace BLogicLayer.Interfaces
 {
