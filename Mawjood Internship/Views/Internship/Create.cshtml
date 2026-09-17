@@ -1,58 +1,76 @@
-﻿@* @using BLogicLayer.ViewModels
-@model InternshipViewModel
+﻿@model BLogicLayer.ViewModels.InternshipViewModel
 
 @{
-    ViewData["Title"] = "Add Internship";
+    ViewData["Title"] = "Create Internship";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-7">
+<div class="container mw-container py-4">
 
-        <div class="card shadow p-4">
+    <div class="mw-card mw-form">
 
-            <h2 class="mb-4">
+        <div class="mb-4">
+            <span class="mw-eyebrow">INTERNSHIP MANAGEMENT</span>
+
+            <h1 class="mb-2">
                 Add Internship
-            </h2>
+            </h1>
 
-            <form asp-action="Create" method="post">
+            <p class="mw-muted mb-0">
+                Create a new internship opportunity.
+            </p>
+        </div>
 
-                @Html.AntiForgeryToken()
+        <form asp-controller="Internship"
+              asp-action="Create"
+              method="post">
 
-                <div asp-validation-summary="All"
-                     class="text-danger">
-                </div>
+            @Html.AntiForgeryToken()
 
-                <div class="mb-3">
+            <div asp-validation-summary="All"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
+
+            <div class="row g-3">
+
+                <!-- Title -->
+                <div class="col-12">
 
                     <label asp-for="Title"
                            class="form-label">
+                        Internship Title
                     </label>
 
                     <input asp-for="Title"
-                           class="form-control" />
+                           class="form-control mw-input"
+                           placeholder="e.g. Software Development Intern" />
 
                     <span asp-validation-for="Title"
-                          class="text-danger">
+                          class="text-danger small">
                     </span>
 
                 </div>
 
-                <div class="mb-3">
+                <!-- Location -->
+                <div class="col-md-6">
 
                     <label asp-for="Location"
                            class="form-label">
+                        Location
                     </label>
 
                     <input asp-for="Location"
-                           class="form-control" />
+                           class="form-control mw-input"
+                           placeholder="e.g. Cairo" />
 
                     <span asp-validation-for="Location"
-                          class="text-danger">
+                          class="text-danger small">
                     </span>
 
                 </div>
 
-                <div class="mb-3">
+                <!-- Company ID -->
+                <div class="col-md-6">
 
                     <label asp-for="CompanyId"
                            class="form-label">
@@ -61,101 +79,51 @@
 
                     <input asp-for="CompanyId"
                            type="number"
-                           class="form-control" />
+                           min="1"
+                           class="form-control mw-input"
+                           placeholder="Enter existing company ID" />
 
                     <span asp-validation-for="CompanyId"
-                          class="text-danger">
+                          class="text-danger small">
                     </span>
+
+                    <div class="form-text">
+                        Use the ID of a company that already exists.
+                    </div>
 
                 </div>
 
+            </div>
+
+            <div class="mw-actions-row mt-4">
+
                 <button type="submit"
-                        class="btn btn-success">
-                    Save
+                        class="btn mw-btn mw-btn-primary">
+
+                    <span class="material-symbols-outlined">
+                        add
+                    </span>
+
+                    Create Internship
+
                 </button>
 
-                <a asp-action="Index"
-                   class="btn btn-secondary">
+                <a asp-controller="Internship"
+                   asp-action="Index"
+                   class="btn mw-btn mw-btn-outline">
+
                     Cancel
+
                 </a>
 
-            </form>
+            </div>
 
-        </div>
+        </form>
+
     </div>
+
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
-
-
-@model BLogicLayer.ViewModels.InternshipViewModel
-
-@{
-    ViewData["Title"] = "Create Internship";
 }
-
-<div class="container mt-4">
-
-    <h2>Create Internship</h2>
-
-    <form asp-action="Create" method="post">
-
-        @Html.AntiForgeryToken()
-
-        <div asp-validation-summary="ModelOnly"
-             class="text-danger">
-        </div>
-
-        <div class="mb-3">
-
-            <label asp-for="Title"
-                   class="form-label">
-            </label>
-
-            <input asp-for="Title"
-                   class="form-control" />
-
-            <span asp-validation-for="Title"
-                  class="text-danger">
-            </span>
-
-        </div>
-
-        <div class="mb-3">
-
-            <label asp-for="Location"
-                   class="form-label">
-            </label>
-
-            <input asp-for="Location"
-                   class="form-control" />
-
-        </div>
-
-        <div class="mb-3">
-
-            <label asp-for="CompanyId"
-                   class="form-label">
-                Company
-            </label>
-
-            <input asp-for="CompanyId"
-                   class="form-control" />
-
-        </div>
-
-        <button type="submit"
-                class="btn btn-success">
-            Create
-        </button>
-
-        <a asp-action="Index"
-           class="btn btn-secondary">
-            Back
-        </a>
-
-    </form>
-
-</div>
