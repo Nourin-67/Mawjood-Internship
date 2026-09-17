@@ -1,347 +1,123 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Mawjood Internship</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
 
-    <title>
-        @ViewData["Title"] - Mawjood Internship
-    </title>
-
-    <link rel="stylesheet"
-          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <link rel="stylesheet"
-          href="~/css/site.css"
-          asp-append-version="true" />
-
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <body>
-
-    <!-- NAVBAR -->
-
-    <header>
-
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-
-            <div class="container-fluid">
-
-                <!-- Website Name -->
-
-                <a class="navbar-brand fw-bold"
-                   asp-controller="Home"
-                   asp-action="Index">
-
-                    Mawjood Internship
-
-                </a>
-
-
-                <!-- Mobile Button -->
-
-                <button class="navbar-toggler"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#mainNavbar"
-                        aria-controls="mainNavbar"
-                        aria-expanded="false"
-                        aria-label="Toggle navigation">
-
-                    <span class="navbar-toggler-icon"></span>
-
-                </button>
-
-
-                <!-- Navbar -->
-
-                <div id="mainNavbar"
-                     class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-
-                    <ul class="navbar-nav flex-grow-1">
-
-                        <!-- HOME -->
-
-                        <li class="nav-item">
-
-                            <a class="nav-link text-dark"
-                               asp-controller="Home"
-                               asp-action="Index">
-
-                                Home
-
-                            </a>
-
-                        </li>
-
-
-                        @if (User.Identity != null &&
-                             User.Identity.IsAuthenticated)
-                        {
-
-                            <!-- ========================= -->
-                            <!-- USER / STUDENT -->
-                            <!-- ========================= -->
-                            @if (User.IsInRole("User"))
-                            {
-
-                                <!-- My Profile -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Student"
-                                       asp-action="Profile">
-
-                                        My Profile
-
-                                    </a>
-
-                                </li>
-
-
-                                <!-- My CV -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="CV"
-                                       asp-action="Index">
-
-                                        My CV
-
-                                    </a>
-
-                                </li>
-
-
-                                <!-- Internships -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Internship"
-                                       asp-action="Index">
-
-                                        Internships
-
-                                    </a>
-
-                                </li>
-
-                            }
-
-
-                            <!-- ========================= -->
-                            <!-- ADMIN -->
-                            <!-- ========================= -->
-                            @if (User.IsInRole("Admin"))
-                            {
-
-                                <!-- Students -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Student"
-                                       asp-action="Index">
-
-                                        Students
-
-                                    </a>
-
-                                </li>
-
-
-                                <!-- Companies -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Company"
-                                       asp-action="Index">
-
-                                        Companies
-
-                                    </a>
-
-                                </li>
-
-
-                                <!-- Internships -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Internship"
-                                       asp-action="Index">
-
-                                        Internships
-
-                                    </a>
-
-                                </li>
-
-
-                                <!-- Skills -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Skill"
-                                       asp-action="Index">
-
-                                        Skills
-
-                                    </a>
-
-                                </li>
-
-
-                                <!-- Applications -->
-
-                                <li class="nav-item">
-
-                                    <a class="nav-link text-dark"
-                                       asp-controller="Application"
-                                       asp-action="Index">
-
-                                        Applications
-
-                                    </a>
-
-                                </li>
-
-                            }
-
-
-                            <!-- LOGOUT -->
-
-                            <li class="nav-item">
-
-                                <form asp-controller="Account"
-                                      asp-action="Logout"
-                                      method="post"
-                                      class="d-inline">
-
-                                    @Html.AntiForgeryToken()
-
-                                    <button type="submit"
-                                            class="btn btn-link nav-link text-dark">
-
-                                        Logout
-
-                                    </button>
-
-                                </form>
-
-                            </li>
-
-                        }
-                        else
-                        {
-
-                            <!-- LOGIN -->
-
-                            <li class="nav-item">
-
-                                <a class="nav-link text-dark"
-                                   asp-controller="Account"
-                                   asp-action="Login">
-
-                                    Login
-
-                                </a>
-
-                            </li>
-
-
-                            <!-- REGISTER -->
-
-                            <li class="nav-item">
-
-                                <a class="nav-link text-dark"
-                                   asp-controller="Account"
-                                   asp-action="Register">
-
-                                    Register
-
-                                </a>
-
-                            </li>
-
-                        }
-
-                    </ul>
-
-
-                    <!-- USER NAME -->
-                    @if (User.Identity != null &&
-                                             User.Identity.IsAuthenticated)
-                    {
-
-                        <span class="navbar-text me-3">
-
-                            Hello, @User.Identity.Name
-
-                        </span>
-
-                    }
-
-                </div>
-
-            </div>
-
+<header class="mw-navbar">
+    <div class="mw-nav-inner">
+        <a class="mw-brand" asp-controller="Home" asp-action="Index">
+            <span class="mw-brand-mark">M</span>
+            <span>Mawjood Internship</span>
+        </a>
+
+        <nav class="mw-nav-links">
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Internship" asp-action="Index">Browse Internships</a>
+
+            @if (User.Identity?.IsAuthenticated == true && User.IsInRole("User"))
+            {
+                <a asp-controller="Student" asp-action="Profile">My Profile</a>
+                <a asp-controller="CV" asp-action="Index">My CV</a>
+            }
+
+            @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
+            {
+                <a asp-controller="Student" asp-action="Index">Students</a>
+                <a asp-controller="Company" asp-action="Index">Companies</a>
+                <a asp-controller="Skill" asp-action="Index">Skills</a>
+                <a asp-controller="Application" asp-action="Index">Applications</a>
+            }
         </nav>
 
-    </header>
-
-
-    <!-- PAGE CONTENT -->
-
-    <div class="container">
-
-        <main role="main"
-              class="pb-3">
-
-            @RenderBody()
-
-        </main>
-
-    </div>
-
-
-    <!-- FOOTER -->
-
-    <footer class="border-top footer text-muted">
-
-        <div class="container text-center py-3">
-
-            &copy; 2026 - Mawjood Internship
-
+        <div class="mw-nav-actions">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <span class="mw-user-name">@User.Identity.Name</span>
+                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="mw-btn mw-btn-outline">Logout</button>
+                </form>
+            }
+            else
+            {
+                <a class="mw-btn mw-btn-outline" asp-controller="Account" asp-action="Login">Login</a>
+                <a class="mw-btn mw-btn-primary" asp-controller="Account" asp-action="Register">Get Started</a>
+            }
         </div>
+    </div>
+</header>
 
-    </footer>
+<main class="mw-main">
+    @if (TempData["Success"] != null)
+    {
+        <div class="mw-alert mw-alert-success">@TempData["Success"]</div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="mw-alert mw-alert-error">@TempData["Error"]</div>
+    }
 
+    @RenderBody()
+</main>
 
-    <!-- JAVASCRIPT -->
+<footer class="mw-footer">
+    <div class="mw-container mw-footer-grid">
+        <div>
+            <div class="mw-brand mw-brand-footer">
+                <span class="mw-brand-mark">M</span>
+                <span>Mawjood Internship</span>
+            </div>
+            <p>Connecting students with internship opportunities.</p>
+        </div>
+        <div>
+            <strong>Explore</strong>
+            <a asp-controller="Home" asp-action="Index">Home</a>
+            <a asp-controller="Internship" asp-action="Index">Browse Internships</a>
+        </div>
+        <div>
+            <strong>Account</strong>
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                @if (User.IsInRole("User"))
+                {
+                    <a asp-controller="Student" asp-action="Profile">My Profile</a>
+                    <a asp-controller="CV" asp-action="Index">My CV</a>
+                }
+                else if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Application" asp-action="Index">Applications</a>
+                    <a asp-controller="Student" asp-action="Index">Students</a>
+                }
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login">Login</a>
+                <a asp-controller="Account" asp-action="Register">Register</a>
+            }
+        </div>
+    </div>
+    <div class="mw-container mw-footer-bottom">
+        <span>© 2026 Mawjood Internship. All rights reserved.</span>
+        <span>ASP.NET Core MVC</span>
+    </div>
+</footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/js/site.js"
-            asp-append-version="true">
-    </script>
-
-    @await RenderSectionAsync(
-        "Scripts",
-        required: false)
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
 </body>
-
 </html>

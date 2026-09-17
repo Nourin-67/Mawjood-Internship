@@ -1,81 +1,51 @@
-﻿@* @using BLogicLayer.ViewModels
-@model InternshipViewModel
-
+﻿@model BLogicLayer.ViewModels.InternshipViewModel
 @{
     ViewData["Title"] = "Internship Details";
 }
 
-<div class="card shadow">
+<div class="mw-container mw-section">
+    <a class="mw-muted" asp-action="Index">← Back to internships</a>
 
-    <div class="card-header bg-dark text-white">
-        <h3>@Model.Title</h3>
-    </div>
+    <div class="mw-card mw-detail mt-3">
+        <span class="mw-chip">@Model.Location</span>
+        <h1 class="mt-3">@Model.Title</h1>
+        <p class="mw-muted mb-0">@Model.CompanyName</p>
 
-    <div class="card-body">
-
-        <p>
-            <strong>Title:</strong>
-            @Model.Title
-        </p>
-
-        <p>
-            <strong>Location:</strong>
-            @Model.Location
-        </p>
-
-        <p>
-            <strong>Company:</strong>
-            @Model.CompanyName
-        </p>
-
-        <a asp-action="Index"
-           class="btn btn-secondary">
-            Back
-        </a>
+        <div class="mw-detail-section mt-4">
+            <h2>Internship Details</h2>
+            <div class="mw-info-grid">
+                <div class="mw-info-item">
+                    <div class="mw-info-label">Title</div>
+                    <div class="mw-info-value">@Model.Title</div>
+                </div>
+                <div class="mw-info-item">
+                    <div class="mw-info-label">Location</div>
+                    <div class="mw-info-value">@Model.Location</div>
+                </div>
+                <div class="mw-info-item">
+                    <div class="mw-info-label">Company</div>
+                    <div class="mw-info-value">@Model.CompanyName</div>
+                </div>
+            </div>
+        </div>
 
         @if (User.IsInRole("Admin"))
         {
-            <a asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="btn btn-warning">
-                Edit
-            </a>
+            <div class="mw-actions-row">
+                <a class="mw-btn mw-btn-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit Internship</a>
+                <a class="mw-btn mw-btn-outline" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+            </div>
         }
-
+        else
+        {
+            <div class="mw-detail-section">
+                <div class="mw-card mw-card-pad" style="background:#f5f8ff;border-color:#dbe6ff;">
+                    <strong>Interested in this opportunity?</strong>
+                    <p class="mw-muted mb-0 mt-1">
+                        Your current backend does not expose a student application-create action, so this page intentionally does not show a fake Apply button.
+                    </p>
+                </div>
+            </div>
+        }
     </div>
-</div> *@
-
-
-
-@model BLogicLayer.ViewModels.InternshipViewModel
-
-@{
-    ViewData["Title"] = "Internship Details";
-}
-
-<div class="container mt-4">
-
-    <h2>Internship Details</h2>
-
-    <div class="card p-4">
-
-        <h4>@Model.Title</h4>
-
-        <p>
-            <strong>Location:</strong>
-            @Model.Location
-        </p>
-
-        <p>
-            <strong>Company:</strong>
-            @Model.CompanyName
-        </p>
-
-    </div>
-
-    <a asp-action="Index"
-       class="btn btn-secondary mt-3">
-        Back
-    </a>
-
 </div>

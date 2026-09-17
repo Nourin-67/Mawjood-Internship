@@ -1,140 +1,47 @@
-﻿@* @using BLogicLayer.ViewModels
-@model List<SkillViewModel>
-
+﻿@model List<BLogicLayer.ViewModels.SkillViewModel>
 @{
     ViewData["Title"] = "Skills";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-
-    <h2>Skills</h2>
-
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Create"
-           class="btn btn-primary">
-            Add Skill
-        </a>
-    }
-
-</div>
-
-<div class="row">
-
-    @foreach (var skill in Model)
-    {
-        <div class="col-md-3 mb-3">
-
-            <div class="card shadow">
-
-                <div class="card-body">
-
-                    <h5>@skill.Name</h5>
-
-                    <a asp-action="Details"
-                       asp-route-id="@skill.Id"
-                       class="btn btn-info btn-sm">
-                        Details
-                    </a>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit"
-                           asp-route-id="@skill.Id"
-                           class="btn btn-warning btn-sm">
-                            Edit
-                        </a>
-
-                        <a asp-action="Delete"
-                           asp-route-id="@skill.Id"
-                           class="btn btn-danger btn-sm">
-                            Delete
-                        </a>
-                    }
-
-                </div>
-
-            </div>
-
+<div class="mw-container mw-section">
+    <div class="mw-section-head">
+        <div>
+            <div class="mw-chip">Admin</div>
+            <h2 class="mt-2">Skills Management</h2>
+            <p>Manage the skills available in the existing system.</p>
         </div>
-    }
-
-</div> *@
-
-
-@model List<BLogicLayer.ViewModels.SkillViewModel>
-
-@{
-    ViewData["Title"] = "Skills";
-}
-
-<div class="container mt-4">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
-        <h2>Skills</h2>
-
         @if (User.IsInRole("Admin"))
         {
-            <a asp-action="Create"
-               class="btn btn-primary">
-                + Add Skill
+            <a class="mw-btn mw-btn-primary" asp-action="Create">
+                <span class="material-symbols-outlined">add</span> Add Skill
             </a>
         }
-
     </div>
 
-    <table class="table table-bordered">
-
-        <thead class="table-dark">
-            <tr>
-                <th>Skill Name</th>
-
-                @if (User.IsInRole("Admin"))
+    <div class="mw-card mw-card-pad">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="mw-empty">No skills found.</div>
+        }
+        else
+        {
+            <div class="mw-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));">
+                @foreach (var skill in Model)
                 {
-                    <th>Actions</th>
+                    <div class="mw-card mw-card-pad">
+                        <div class="d-flex align-items-center justify-content-between gap-2">
+                            <strong>@skill.Name</strong>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex gap-1">
+                                    <a class="mw-btn mw-btn-outline" asp-action="Edit" asp-route-id="@skill.Id">Edit</a>
+                                    <a class="mw-btn mw-btn-outline" asp-action="Delete" asp-route-id="@skill.Id">Delete</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
                 }
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach (var skill in Model)
-            {
-                <tr>
-
-                    <td>@skill.Name</td>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <td>
-
-                            <a asp-action="Details"
-                               asp-route-id="@skill.Id"
-                               class="btn btn-info btn-sm">
-                                Details
-                            </a>
-
-                            <a asp-action="Edit"
-                               asp-route-id="@skill.Id"
-                               class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
-
-                            <a asp-action="Delete"
-                               asp-route-id="@skill.Id"
-                               class="btn btn-danger btn-sm">
-                                Delete
-                            </a>
-
-                        </td>
-                    }
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-
+            </div>
+        }
+    </div>
 </div>
