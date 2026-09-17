@@ -1,0 +1,99 @@
+﻿@model List<BLogicLayer.ViewModels.ApplicationWorkflowViewModel>
+
+@{
+    ViewData["Title"] = "My Applications";
+}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">My Applications</h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            You have not applied for any internship yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>Internship</th>
+                        <th>Company</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach (var application in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @application.InternshipTitle
+                            </td>
+
+                            <td>
+                                @application.CompanyName
+                            </td>
+
+                            <td>
+                                @application.Date.ToShortDateString()
+                            </td>
+
+                            <td>
+
+                                @if (application.Status == "Accepted")
+                                {
+                                    <span class="badge bg-success">
+                                        Accepted
+                                    </span>
+                                }
+                                else if (application.Status == "Rejected")
+                                {
+                                    <span class="badge bg-danger">
+                                        Rejected
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">
+                                        Pending
+                                    </span>
+                                }
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+
+</div>
