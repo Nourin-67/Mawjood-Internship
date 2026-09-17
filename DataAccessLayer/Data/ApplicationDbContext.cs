@@ -149,6 +149,7 @@ namespace DataAccessLayer.Data
         public DbSet<StudentSkill> StudentSkills { get; set; }
 
         public DbSet<InternshipSkill> InternshipSkills { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
 
         // ========================================
@@ -222,6 +223,15 @@ namespace DataAccessLayer.Data
                 .HasForeignKey(a => a.InternshipId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            // ========================================
+            // Student 1 : Many Notifications
+            // ========================================
+
+            modelBuilder.Entity<Notification>()
+                .HasOne(n => n.Student)
+                .WithMany(s => s.Notifications)
+                .HasForeignKey(n => n.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // ========================================
             // Student 1 : Many StudentSkill

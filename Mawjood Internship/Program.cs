@@ -220,6 +220,8 @@ builder.Services.AddScoped<ISkillService, SkillService>();
 
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
+builder.Services.AddScoped<INotificationService, NotificationService>();
+
 
 // ========================================
 // Authorization
