@@ -1,204 +1,110 @@
-﻿@* @using BLogicLayer.ViewModels
+﻿@model BLogicLayer.ViewModels.LoginViewModel
 
-@model LoginViewModel 
 @{
     ViewData["Title"] = "Login";
 }
-<div class="col-md-5">
 
-    <div class="card shadow p-4">
+<div class="container mw-container mw-auth-wrap">
+    <div class="mw-auth-card">
 
-        <h2 class="text-center mb-4">
-            Login
-        </h2>
+        <div class="text-center mb-4">
+            <div class="mw-auth-icon">
+                <span class="material-symbols-outlined">lock</span>
+            </div>
 
-        <form asp-action="Login" method="post">
+            <span class="mw-eyebrow">WELCOME BACK</span>
+
+            <h1>Sign in to Mawjood</h1>
+
+            <p>
+                Access your internship opportunities and student profile.
+            </p>
+        </div>
+
+        <form asp-controller="Account"
+              asp-action="Login"
+              method="post">
 
             @Html.AntiForgeryToken()
 
             <div asp-validation-summary="All"
-                 class="text-danger">
+                 class="alert alert-danger"
+                 role="alert">
             </div>
 
+            <!-- Email -->
             <div class="mb-3">
-
                 <label asp-for="Email"
                        class="form-label">
                 </label>
 
                 <input asp-for="Email"
-                       class="form-control" />
+                       class="form-control mw-input"
+                       autocomplete="email"
+                       placeholder="you@example.com" />
 
                 <span asp-validation-for="Email"
-                      class="text-danger">
+                      class="text-danger small">
                 </span>
-
             </div>
 
+            <!-- Password -->
             <div class="mb-3">
-
                 <label asp-for="Password"
                        class="form-label">
                 </label>
 
                 <input asp-for="Password"
-                       class="form-control" />
+                       class="form-control mw-input"
+                       autocomplete="current-password"
+                       placeholder="Enter your password" />
 
                 <span asp-validation-for="Password"
-                      class="text-danger">
+                      class="text-danger small">
                 </span>
-
             </div>
 
-            <div class="form-check mb-3">
-
+            <!-- Remember Me -->
+            <div class="form-check mb-4">
                 <input asp-for="RememberMe"
                        class="form-check-input" />
 
                 <label asp-for="RememberMe"
                        class="form-check-label">
-                    Remember me
                 </label>
-
             </div>
 
+            <!-- Login -->
             <button type="submit"
-                    class="btn btn-primary w-100">
+                    class="btn mw-btn mw-btn-primary w-100 mw-btn-lg">
+
                 Login
+
+                <span class="material-symbols-outlined">
+                    arrow_forward
+                </span>
+
             </button>
 
         </form>
 
-        <div class="text-center mt-3">
+        <div class="text-center mt-4">
 
-            <span>Don't have an account?</span>
+            Don't have an account?
 
-            <a asp-action="Register">
-                Register
+            <a asp-controller="Account"
+               asp-action="Register"
+               class="mw-link">
+
+                Create one
+
             </a>
 
         </div>
 
     </div>
-
-</div>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-} *@
-
-
-                    @using BLogicLayer.ViewModels
-
-@model LoginViewModel
-
-@{
-    ViewData["Title"] = "Login";
-}
-
-<div class="row justify-content-center">
-
-    <div class="col-md-5">
-
-        <div class="card shadow p-4">
-
-            <h2 class="text-center mb-4">
-                Login
-            </h2>
-
-            <form asp-action="Login"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-                <div asp-validation-summary="All"
-                     class="text-danger mb-3">
-                </div>
-
-
-                <!-- Email -->
-
-                <div class="mb-3">
-
-                    <label asp-for="Email"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Email"
-                           class="form-control" />
-
-                    <span asp-validation-for="Email"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- Password -->
-
-                <div class="mb-3">
-
-                    <label asp-for="Password"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Password"
-                           class="form-control" />
-
-                    <span asp-validation-for="Password"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-
-                <!-- Remember Me -->
-
-                <div class="form-check mb-3">
-
-                    <input asp-for="RememberMe"
-                           class="form-check-input" />
-
-                    <label asp-for="RememberMe"
-                           class="form-check-label">
-
-                        Remember me
-
-                    </label>
-
-                </div>
-
-
-                <button type="submit"
-                        class="btn btn-primary w-100">
-
-                    Login
-
-                </button>
-
-            </form>
-
-
-            <div class="text-center mt-3">
-
-                <span>
-                    Don't have an account?
-                </span>
-
-                <a asp-action="Register">
-                    Register
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
 </div>
 
-
 @section Scripts {
-
     <partial name="_ValidationScriptsPartial" />
-
 }
