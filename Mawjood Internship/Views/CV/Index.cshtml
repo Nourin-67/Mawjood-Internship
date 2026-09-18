@@ -1,370 +1,194 @@
-﻿@* @model BLogicLayer.ViewModels.CVViewModel
+﻿@model BLogicLayer.ViewModels.CVViewModel
 
 @{
-    ViewData["Title"] = "My CV";
+    ViewData["Title"] = "My Profile";
 }
 
-<style>
+<div class="container py-5">
 
-    .cv-page {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
-        padding: 40px 15px;
-    }
+    <div class="mb-4">
+        <h1 class="fw-bold">
+            @Model.FName @Model.LName
+        </h1>
 
-    .cv-box {
-        width: 100%;
-        max-width: 600px;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-
-    .cv-title {
-        text-align: center;
-        margin-bottom: 8px;
-        font-weight: 700;
-    }
-
-    .cv-subtitle {
-        text-align: center;
-        color: #777;
-        margin-bottom: 30px;
-    }
-
-    .option-box {
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-    }
-
-    .option-title {
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-
-    .or {
-        text-align: center;
-        color: #888;
-        margin: 20px 0;
-    }
-
-</style>
-
-
-<div class="cv-page">
-
-    <div class="cv-box">
-
-
-        <!-- Title -->
-
-        <h2 class="cv-title">
-            My CV
-        </h2>
-
-
-        <p class="cv-subtitle">
-
-            Add your CV to increase your internship opportunities.
-
+        <p class="text-muted">
+            @Model.Email
         </p>
-
-
-        <!-- Error -->
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger">
-
-                @TempData["Error"]
-
-            </div>
-        }
-
-
-        <!-- Success -->
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success">
-
-                @TempData["Success"]
-
-            </div>
-        }
-
-
-        <!-- ========================= -->
-        <!-- OPTION 1 -->
-        <!-- Existing CV Link -->
-        <!-- ========================= -->
-
-        <div class="option-box">
-
-            <div class="option-title">
-
-                I already have a CV
-
-            </div>
-
-
-            <p class="text-muted">
-
-                If you already have a CV on Google Drive,
-                LinkedIn, OneDrive, or another website,
-                paste its link here.
-
-            </p>
-
-
-            <form asp-action="SaveLink"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-
-                <label class="form-label">
-
-                    CV Link
-
-                </label>
-
-
-                <input type="url"
-                       name="cvLink"
-                       class="form-control mb-3"
-                       placeholder="https://drive.google.com/..."
-                       required />
-
-
-                <button type="submit"
-                        class="btn btn-primary w-100">
-
-                    Save CV Link
-
-                </button>
-
-            </form>
-
-        </div>
-
-
-        <!-- OR -->
-
-        <div class="or">
-
-            OR
-
-        </div>
-
-
-        <!-- ========================= -->
-        <!-- OPTION 2 -->
-        <!-- Create CV -->
-        <!-- ========================= -->
-
-        <div class="option-box text-center">
-
-            <div class="option-title">
-
-                I don't have a CV
-
-            </div>
-
-
-            <p class="text-muted">
-
-                Create a professional CV
-                directly inside Mawjood Internship.
-
-            </p>
-
-
-            <a asp-action="Create"
-               class="btn btn-outline-primary w-100">
-
-                Create My CV
-
-            </a>
-
-        </div>
-
-
     </div>
 
-</div> *@
 
+    <!-- ========================================= -->
+    <!-- CV FILE -->
+    <!-- ========================================= -->
+    @if (!string.IsNullOrWhiteSpace(Model.CVFilePath))
+    {
+        <div class="card shadow-sm mb-4">
 
+            <div class="card-body">
 
-        @model BLogicLayer.ViewModels.CVViewModel
+                <h4 class="fw-bold">
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    My CV File
+                </h4>
 
-@{
-    ViewData["Title"] = "My CV";
-}
+                <p class="text-muted">
+                    Your uploaded PDF CV.
+                </p>
 
-<style>
+                <div class="d-flex gap-2">
 
-    .cv-page {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
-        padding: 40px 15px;
-    }
+                    <a href="@Model.CVFilePath"
+                       target="_blank"
+                       class="btn btn-primary">
 
-    .cv-box {
-        width: 100%;
-        max-width: 600px;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
+                        <i class="bi bi-eye"></i>
+                        Preview
 
-    .cv-title {
-        text-align: center;
-        margin-bottom: 8px;
-        font-weight: 700;
-    }
+                    </a>
 
-    .cv-subtitle {
-        text-align: center;
-        color: #777;
-        margin-bottom: 30px;
-    }
+                    <a href="@Model.CVFilePath"
+                       download
+                       class="btn btn-outline-primary">
 
-    .option-box {
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-    }
+                        <i class="bi bi-download"></i>
+                        Download
 
-    .option-title {
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
+                    </a>
 
-    .or {
-        text-align: center;
-        color: #888;
-        margin: 20px 0;
-    }
+                </div>
 
-</style>
-
-<div class="cv-page">
-
-    <div class="cv-box">
-
-        <!-- TITLE -->
-
-        <h2 class="cv-title">
-            My CV
-        </h2>
-
-        <p class="cv-subtitle">
-            Add your CV to increase your internship opportunities.
-        </p>
-
-
-        <!-- ERROR -->
-
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger">
-                @TempData["Error"]
             </div>
-        }
-
-
-        <!-- SUCCESS -->
-
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success">
-                @TempData["Success"]
-            </div>
-        }
-
-
-        <!-- EXISTING CV -->
-
-        <div class="option-box">
-
-            <div class="option-title">
-                I already have a CV
-            </div>
-
-            <p class="text-muted">
-                If you already have a CV on Google Drive,
-                LinkedIn, OneDrive, or another website,
-                paste its link here.
-            </p>
-
-            <form asp-action="SaveExternalCV"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-                <label class="form-label">
-                    CV Link
-                </label>
-
-                <input type="url"
-                       name="cvLink"
-                       class="form-control mb-3"
-                       placeholder="https://drive.google.com/..."
-                       required />
-
-                <button type="submit"
-                        class="btn btn-primary w-100">
-
-                    Save CV Link
-
-                </button>
-
-            </form>
 
         </div>
+    }
 
 
-        <!-- OR -->
+    <!-- ========================================= -->
+    <!-- EXTERNAL CV -->
+    <!-- ========================================= -->
+    @if (!string.IsNullOrWhiteSpace(Model.ExternalCVLink))
+    {
+        <div class="card shadow-sm mb-4">
 
-        <div class="or">
-            OR
-        </div>
+            <div class="card-body">
 
+                <h4 class="fw-bold">
+                    <i class="bi bi-link-45deg"></i>
+                    External CV
+                </h4>
 
-        <!-- CREATE CV -->
+                <p class="text-muted">
+                    CV hosted on an external platform.
+                </p>
 
-        <div class="option-box text-center">
+                <a href="@Model.ExternalCVLink"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn-outline-success">
 
-            <div class="option-title">
-                I don't have a CV
+                    <i class="bi bi-box-arrow-up-right"></i>
+                    Open CV Link
+
+                </a>
+
             </div>
 
-            <p class="text-muted">
-                Create a professional CV
-                directly inside Mawjood Internship.
-            </p>
+        </div>
+    }
 
-            <a asp-action="Create"
-               class="btn btn-outline-primary w-100">
 
-                Create My CV
+    <!-- ========================================= -->
+    <!-- INTERNAL CV -->
+    <!-- ========================================= -->
+    @if (!string.IsNullOrWhiteSpace(Model.AboutMe) ||
+            !string.IsNullOrWhiteSpace(Model.Skills) ||
+            !string.IsNullOrWhiteSpace(Model.Courses) ||
+            !string.IsNullOrWhiteSpace(Model.Experience))
+    {
+        <div class="card shadow-sm mb-4">
 
-            </a>
+            <div class="card-body">
+
+                <h4 class="fw-bold mb-4">
+                    Internal CV
+                </h4>
+
+                @if (!string.IsNullOrWhiteSpace(Model.AboutMe))
+                {
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold">
+                            About Me
+                        </h5>
+
+                        <p>
+                            @Model.AboutMe
+                        </p>
+
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Skills))
+                {
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold">
+                            Skills
+                        </h5>
+
+                        <p>
+                            @Model.Skills
+                        </p>
+
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Courses))
+                {
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold">
+                            Courses
+                        </h5>
+
+                        <p>
+                            @Model.Courses
+                        </p>
+
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(Model.Experience))
+                {
+                    <div class="mb-4">
+
+                        <h5 class="fw-bold">
+                            Experience
+                        </h5>
+
+                        <p>
+                            @Model.Experience
+                        </p>
+
+                    </div>
+                }
+
+            </div>
 
         </div>
+    }
 
-    </div>
+
+    <!-- ========================================= -->
+    <!-- EDIT CV -->
+    <!-- ========================================= -->
+
+    <a asp-action="Create"
+       class="btn btn-dark">
+
+        <i class="bi bi-pencil"></i>
+        Edit CV
+
+    </a>
 
 </div>
