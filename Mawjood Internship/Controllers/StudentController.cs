@@ -1,124 +1,9 @@
-﻿//using BLogicLayer.Interfaces;
-//using BLogicLayer.ViewModels;
-//using Microsoft.AspNetCore.Authorization;
-//using Microsoft.AspNetCore.Mvc;
-//namespace PerstionLayer.Controllers
-//{
-//    [Authorize]
-//    public class StudentController : Controller
-//    {
-//        private readonly IStudentService _studentService;
-//        public StudentController(IStudentService studentService)
-//        {
-//            _studentService = studentService;
-//        }
-
-//        // GET: Student
-//        public async Task<IActionResult> Index()
-//        {
-//            var students = await _studentService.GetAll();
-
-//            return View(students);
-//        }
-
-//        // GET: Student/Details/5
-//        public async Task<IActionResult> Details(int id)
-//        {
-//            var student = await _studentService.GetById(id);
-
-//            if (student == null)
-//                return NotFound();
-
-//            return View(student);
-//        }
-
-//        // GET: Student/Create
-//        [Authorize(Roles = "Admin")]
-//        public IActionResult Create()
-//        {
-//            return View();
-//        }
-
-//        // POST: Student/Create
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        [Authorize(Roles = "Admin")]
-//        public async Task<IActionResult> Create(StudentViewModel model)
-//        {
-//            if (!ModelState.IsValid)
-//                return View(model);
-
-//            await _studentService.Add(model);
-
-//            return RedirectToAction(nameof(Index));
-//        }
-
-//        // GET: Student/Edit/5
-//        [Authorize(Roles = "Admin")]
-//        public async Task<IActionResult> Edit(int id)
-//        {
-//            var student = await _studentService.GetById(id);
-
-//            if (student == null)
-//                return NotFound();
-
-//            return View(student);
-//        }
-
-//        // POST: Student/Edit/5
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        [Authorize(Roles = "Admin")]
-//        public async Task<IActionResult> Edit(
-//            int id,
-//            StudentViewModel model)
-//        {
-//            if (id != model.Id)
-//                return BadRequest();
-
-//            if (!ModelState.IsValid)
-//                return View(model);
-
-//            await _studentService.Update(model);
-
-//            return RedirectToAction(nameof(Index));
-//        }
-
-//        // GET: Student/Delete/5
-//        [Authorize(Roles = "Admin")]
-//        public async Task<IActionResult> Delete(int id)
-//        {
-//            var student = await _studentService.GetById(id);
-
-//            if (student == null)
-//                return NotFound();
-
-//            return View(student);
-//        }
-
-//        // POST: Student/Delete/5
-//        [HttpPost, ActionName("Delete")]
-//        [ValidateAntiForgeryToken]
-//        [Authorize(Roles = "Admin")]
-//        public async Task<IActionResult> DeleteConfirmed(int id)
-//        {
-//            var deleted = await _studentService.Delete(id);
-
-//            if (!deleted)
-//                return NotFound();
-
-//            return RedirectToAction(nameof(Index));
-//        }
-//    }
-//}
-using BLogicLayer.Interfaces;
+﻿using BLogicLayer.Interfaces;
 using BLogicLayer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
-
-namespace Mawjood_Internship.Controllers
+namespace Mawjood_Internship77.Controllers
 {
     [Authorize]
     public class StudentController : Controller
@@ -131,10 +16,11 @@ namespace Mawjood_Internship.Controllers
         }
 
         // =========================
-        // My Profile
+        // STUDENT PROFILE
         // =========================
 
         [Authorize(Roles = "User")]
+        [HttpGet]
         public async Task<IActionResult> Profile()
         {
             var email = User.Identity?.Name;
@@ -162,8 +48,9 @@ namespace Mawjood_Internship.Controllers
         }
 
         // =========================
-        // Student Details
+        // DETAILS
         // =========================
+
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -178,7 +65,7 @@ namespace Mawjood_Internship.Controllers
         }
 
         // =========================
-        // Admin Create
+        // CREATE - GET
         // =========================
 
         [Authorize(Roles = "Admin")]
@@ -188,11 +75,19 @@ namespace Mawjood_Internship.Controllers
             return View();
         }
 
+        // =========================
+        // CREATE - POST
+        // =========================
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(StudentViewModel model)
         {
+            // CV is optional for Student Create.
+            // The ViewModel is kept unchanged.
+            ModelState.Remove(nameof(StudentViewModel.CV));
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -204,8 +99,9 @@ namespace Mawjood_Internship.Controllers
         }
 
         // =========================
-        // Students List
+        // INDEX
         // =========================
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -216,8 +112,9 @@ namespace Mawjood_Internship.Controllers
         }
 
         // =========================
-        // Admin Edit
+        // EDIT - GET
         // =========================
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
@@ -232,6 +129,10 @@ namespace Mawjood_Internship.Controllers
             return View(student);
         }
 
+        // =========================
+        // EDIT - POST
+        // =========================
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -244,6 +145,10 @@ namespace Mawjood_Internship.Controllers
                 return NotFound();
             }
 
+            // CV is optional for Student Edit.
+            // The ViewModel is kept unchanged.
+            ModelState.Remove(nameof(StudentViewModel.CV));
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -255,8 +160,9 @@ namespace Mawjood_Internship.Controllers
         }
 
         // =========================
-        // Admin Delete
+        // DELETE - GET
         // =========================
+
         [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
@@ -270,6 +176,10 @@ namespace Mawjood_Internship.Controllers
 
             return View(student);
         }
+
+        // =========================
+        // DELETE - POST
+        // =========================
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
