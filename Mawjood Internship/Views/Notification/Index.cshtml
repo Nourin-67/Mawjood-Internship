@@ -1,0 +1,134 @@
+﻿@model List<BLogicLayer.ViewModels.NotificationViewModel>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="mw-container mw-section">
+
+    <div class="mw-section-head">
+
+        <div>
+            <div class="mw-chip">
+                Notifications
+            </div>
+
+            <h2 class="mt-2">
+                Your Notifications
+            </h2>
+
+            <p>
+                Stay updated with your internship application results.
+            </p>
+        </div>
+
+
+        @if (Model != null && Model.Any(x => !x.IsRead))
+        {
+            <form asp-action="MarkAllAsRead"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="mw-btn mw-btn-outline">
+
+                    Mark all as read
+
+                </button>
+
+            </form>
+        }
+
+    </div>
+
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="mw-card mw-empty">
+
+            <span class="material-symbols-outlined"
+                  style="font-size:42px;">
+
+                notifications_none
+
+            </span>
+
+            <h3 class="mt-3">
+                No notifications
+            </h3>
+
+            <p>
+                You don't have any notifications yet.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <div class="d-flex flex-column gap-3">
+
+            @foreach (var notification in Model)
+            {
+                <div class="mw-card mw-card-pad
+                            @(notification.IsRead
+                                ? ""
+                                : "border-primary")">
+
+                    <div class="d-flex gap-3">
+
+                        <div class="mw-feature-icon mb-0">
+
+                            <span class="material-symbols-outlined">
+                                @(notification.IsRead
+                                    ? "notifications"
+                                    : "mark_email_unread")
+                            </span>
+
+                        </div>
+
+
+                        <div class="flex-grow-1">
+
+                            <p class="mb-1">
+                                @notification.Message
+                            </p>
+
+                            <div class="mw-muted small">
+
+                                @notification.CreatedAt.ToLocalTime()
+                                    .ToString("dd MMM yyyy, hh:mm tt")
+
+                            </div>
+
+
+                            @if (!notification.IsRead)
+                            {
+                                <form asp-action="MarkAsRead"
+                                      asp-route-id="@notification.Id"
+                                      method="post"
+                                      class="mt-2">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <button type="submit"
+                                            class="mw-btn mw-btn-outline">
+
+                                        Mark as read
+
+                                    </button>
+
+                                </form>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>

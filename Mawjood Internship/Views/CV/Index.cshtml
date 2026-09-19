@@ -1,370 +1,62 @@
-﻿@* @model BLogicLayer.ViewModels.CVViewModel
-
+﻿@model BLogicLayer.ViewModels.CVViewModel
 @{
     ViewData["Title"] = "My CV";
 }
 
-<style>
-
-    .cv-page {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
-        padding: 40px 15px;
-    }
-
-    .cv-box {
-        width: 100%;
-        max-width: 600px;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-
-    .cv-title {
-        text-align: center;
-        margin-bottom: 8px;
-        font-weight: 700;
-    }
-
-    .cv-subtitle {
-        text-align: center;
-        color: #777;
-        margin-bottom: 30px;
-    }
-
-    .option-box {
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-    }
-
-    .option-title {
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-
-    .or {
-        text-align: center;
-        color: #888;
-        margin: 20px 0;
-    }
-
-</style>
-
-
-<div class="cv-page">
-
-    <div class="cv-box">
-
-
-        <!-- Title -->
-
-        <h2 class="cv-title">
-            My CV
-        </h2>
-
-
-        <p class="cv-subtitle">
-
-            Add your CV to increase your internship opportunities.
-
-        </p>
-
-
-        <!-- Error -->
-        @if (TempData["Error"] != null)
-        {
-            <div class="alert alert-danger">
-
-                @TempData["Error"]
-
-            </div>
-        }
-
-
-        <!-- Success -->
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success">
-
-                @TempData["Success"]
-
-            </div>
-        }
-
-
-        <!-- ========================= -->
-        <!-- OPTION 1 -->
-        <!-- Existing CV Link -->
-        <!-- ========================= -->
-
-        <div class="option-box">
-
-            <div class="option-title">
-
-                I already have a CV
-
-            </div>
-
-
-            <p class="text-muted">
-
-                If you already have a CV on Google Drive,
-                LinkedIn, OneDrive, or another website,
-                paste its link here.
-
-            </p>
-
-
-            <form asp-action="SaveLink"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-
-                <label class="form-label">
-
-                    CV Link
-
-                </label>
-
-
-                <input type="url"
-                       name="cvLink"
-                       class="form-control mb-3"
-                       placeholder="https://drive.google.com/..."
-                       required />
-
-
-                <button type="submit"
-                        class="btn btn-primary w-100">
-
-                    Save CV Link
-
-                </button>
-
-            </form>
-
+<div class="mw-container mw-section">
+    <div class="mw-section-head">
+        <div>
+            <div class="mw-chip">Student Portal</div>
+            <h2 class="mt-2">My Curriculum Vitae (CV)</h2>
+            <p>Manage your PDF CV and external portfolio link.</p>
         </div>
-
-
-        <!-- OR -->
-
-        <div class="or">
-
-            OR
-
-        </div>
-
-
-        <!-- ========================= -->
-        <!-- OPTION 2 -->
-        <!-- Create CV -->
-        <!-- ========================= -->
-
-        <div class="option-box text-center">
-
-            <div class="option-title">
-
-                I don't have a CV
-
-            </div>
-
-
-            <p class="text-muted">
-
-                Create a professional CV
-                directly inside Mawjood Internship.
-
-            </p>
-
-
-            <a asp-action="Create"
-               class="btn btn-outline-primary w-100">
-
-                Create My CV
-
-            </a>
-
-        </div>
-
-
+        <a class="mw-btn mw-btn-primary" asp-action="Create">Edit CV</a>
     </div>
 
-</div> *@
+    <div class="mw-card mw-card-pad">
+        <h3 class="h5">CV / Portfolio</h3>
 
-
-
-        @model BLogicLayer.ViewModels.CVViewModel
-
-@{
-    ViewData["Title"] = "My CV";
-}
-
-<style>
-
-    .cv-page {
-        min-height: 80vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f8f9fa;
-        padding: 40px 15px;
-    }
-
-    .cv-box {
-        width: 100%;
-        max-width: 600px;
-        background: white;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    }
-
-    .cv-title {
-        text-align: center;
-        margin-bottom: 8px;
-        font-weight: 700;
-    }
-
-    .cv-subtitle {
-        text-align: center;
-        color: #777;
-        margin-bottom: 30px;
-    }
-
-    .option-box {
-        border: 1px solid #ddd;
-        border-radius: 15px;
-        padding: 25px;
-        margin-bottom: 20px;
-    }
-
-    .option-title {
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-
-    .or {
-        text-align: center;
-        color: #888;
-        margin: 20px 0;
-    }
-
-</style>
-
-<div class="cv-page">
-
-    <div class="cv-box">
-
-        <!-- TITLE -->
-
-        <h2 class="cv-title">
-            My CV
-        </h2>
-
-        <p class="cv-subtitle">
-            Add your CV to increase your internship opportunities.
-        </p>
-
-
-        <!-- ERROR -->
-
-        @if (TempData["Error"] != null)
+        @if (!string.IsNullOrWhiteSpace(Model.CVFilePath))
         {
-            <div class="alert alert-danger">
-                @TempData["Error"]
+            <div class="mw-info-item mt-3">
+                <div class="mw-info-label">Uploaded PDF</div>
+                <div class="mw-info-value">@System.IO.Path.GetFileName(Model.CVFilePath)</div>
+                <div class="mw-actions-row">
+                    <a class="mw-btn mw-btn-primary" href="@Model.CVFilePath" target="_blank" rel="noopener">View PDF</a>
+                    <a class="mw-btn mw-btn-outline" href="@Model.CVFilePath" download>Download</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="mw-empty" style="padding:30px 10px;">
+                <span class="material-symbols-outlined" style="font-size:38px;">description</span>
+                <p class="mt-2 mb-0">No uploaded PDF CV yet.</p>
             </div>
         }
 
-
-        <!-- SUCCESS -->
-
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success">
-                @TempData["Success"]
-            </div>
-        }
-
-
-        <!-- EXISTING CV -->
-
-        <div class="option-box">
-
-            <div class="option-title">
-                I already have a CV
-            </div>
-
-            <p class="text-muted">
-                If you already have a CV on Google Drive,
-                LinkedIn, OneDrive, or another website,
-                paste its link here.
-            </p>
-
-            <form asp-action="SaveExternalCV"
-                  method="post">
-
-                @Html.AntiForgeryToken()
-
-                <label class="form-label">
-                    CV Link
-                </label>
-
-                <input type="url"
-                       name="cvLink"
-                       class="form-control mb-3"
-                       placeholder="https://drive.google.com/..."
-                       required />
-
-                <button type="submit"
-                        class="btn btn-primary w-100">
-
-                    Save CV Link
-
-                </button>
-
-            </form>
-
+        <div class="mw-info-item mt-3">
+            <div class="mw-info-label">External CV / Portfolio Link</div>
+            @if (!string.IsNullOrWhiteSpace(Model.ExternalCVLink))
+            {
+                <a class="mw-info-value" href="@Model.ExternalCVLink" target="_blank" rel="noopener">@Model.ExternalCVLink</a>
+            }
+            else
+            {
+                <div class="mw-info-value">—</div>
+            }
         </div>
-
-
-        <!-- OR -->
-
-        <div class="or">
-            OR
-        </div>
-
-
-        <!-- CREATE CV -->
-
-        <div class="option-box text-center">
-
-            <div class="option-title">
-                I don't have a CV
-            </div>
-
-            <p class="text-muted">
-                Create a professional CV
-                directly inside Mawjood Internship.
-            </p>
-
-            <a asp-action="Create"
-               class="btn btn-outline-primary w-100">
-
-                Create My CV
-
-            </a>
-
-        </div>
-
     </div>
 
+    <div class="mw-card mw-card-pad mt-3">
+        <h3 class="h5 mb-3">CV Information</h3>
+        <div class="mw-info-grid">
+            <div class="mw-info-item"><div class="mw-info-label">Name</div><div class="mw-info-value">@Model.FName @Model.LName</div></div>
+            <div class="mw-info-item"><div class="mw-info-label">Email</div><div class="mw-info-value">@Model.Email</div></div>
+            <div class="mw-info-item"><div class="mw-info-label">University</div><div class="mw-info-value">@(Model.University ?? "—")</div></div>
+            <div class="mw-info-item"><div class="mw-info-label">Major</div><div class="mw-info-value">@(Model.Major ?? "—")</div></div>
+            <div class="mw-info-item"><div class="mw-info-label">Education</div><div class="mw-info-value">@(Model.Education ?? "—")</div></div>
+            <div class="mw-info-item"><div class="mw-info-label">Academic Year</div><div class="mw-info-value">@(Model.AcademicYear?.ToString() ?? "—")</div></div>
+        </div>
+    </div>
 </div>
