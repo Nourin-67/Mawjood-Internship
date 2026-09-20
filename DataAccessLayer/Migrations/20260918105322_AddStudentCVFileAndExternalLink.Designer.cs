@@ -4,6 +4,7 @@ using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260918105322_AddStudentCVFileAndExternalLink")]
+    partial class AddStudentCVFileAndExternalLink
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +65,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<int>("InternshipId")
                         .HasColumnType("int");
-
-                    b.Property<double>("MatchingScore")
-                        .HasColumnType("float");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -232,35 +232,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("SkillId");
 
                     b.ToTable("InternshipSkills");
-                });
-
-            modelBuilder.Entity("DataAccessLayer.Models.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Skill", b =>
@@ -547,17 +518,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Skill");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Notification", b =>
-                {
-                    b.HasOne("DataAccessLayer.Models.Student", "Student")
-                        .WithMany("Notifications")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.StudentSkill", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Skill", "Skill")
@@ -650,8 +610,6 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Student", b =>
                 {
                     b.Navigation("Applications");
-
-                    b.Navigation("Notifications");
 
                     b.Navigation("StudentSkills");
                 });

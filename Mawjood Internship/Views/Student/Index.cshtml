@@ -1,202 +1,150 @@
-﻿@* @using BLogicLayer.ViewModels
-@model List<StudentViewModel>
+﻿@model List<BLogicLayer.ViewModels.StudentViewModel>
 
 @{
     ViewData["Title"] = "Students";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-4">
+<div class="mw-container mw-section">
 
-    <h2>Students</h2>
+    <div class="mw-section-head">
 
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Create"
-           class="btn btn-primary">
+        <div>
+            <div class="mw-chip">Admin</div>
+
+            <h2 class="mt-2">
+                Students Management
+            </h2>
+
+            <p>
+                View and manage student records.
+            </p>
+        </div>
+
+        <a class="mw-btn mw-btn-primary"
+           asp-action="Create">
+
+            <span class="material-symbols-outlined">
+                person_add
+            </span>
+
             Add Student
+
         </a>
-    }
-
-</div>
-
-@if (!Model.Any())
-{
-    <div class="alert alert-info">
-        No students found.
-    </div>
-}
-else
-{
-    <div class="table-responsive">
-
-        <table class="table table-bordered table-hover bg-white">
-
-            <thead class="table-dark">
-
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>University</th>
-                    <th>Major</th>
-                    <th>Academic Year</th>
-                    <th>City</th>
-                    <th>Actions</th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                @foreach (var student in Model)
-                {
-                    <tr>
-
-                        <td>@student.Id</td>
-
-                        <td>
-                            @student.FName @student.LName
-                        </td>
-
-                        <td>@student.Email</td>
-
-                        <td>@student.University</td>
-
-                        <td>@student.Major</td>
-
-                        <td>@student.AcademicYear</td>
-
-                        <td>@student.City</td>
-
-                        <td>
-
-                            <a asp-action="Details"
-                               asp-route-id="@student.Id"
-                               class="btn btn-info btn-sm">
-                                Details
-                            </a>
-
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-action="Edit"
-                                   asp-route-id="@student.Id"
-                                   class="btn btn-warning btn-sm">
-                                    Edit
-                                </a>
-
-                                <a asp-action="Delete"
-                                   asp-route-id="@student.Id"
-                                   class="btn btn-danger btn-sm">
-                                    Delete
-                                </a>
-                            }
-
-                        </td>
-
-                    </tr>
-                }
-
-            </tbody>
-
-        </table>
 
     </div>
-} *@
-@model List<BLogicLayer.ViewModels.StudentViewModel>
 
-@{
-    ViewData["Title"] = "Students";
-}
 
-<div class="container mt-4">
+    <div class="mw-card mw-table-wrap">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Students</h2>
-
-        @if (User.IsInRole("Admin"))
+        @if (Model == null || !Model.Any())
         {
-            <a asp-action="Create" class="btn btn-primary">
-                + Add Student
-            </a>
+            <div class="mw-empty">
+
+                <span class="material-symbols-outlined"
+                      style="font-size:42px;">
+                    group
+                </span>
+
+                <h3 class="mt-3">
+                    No students found
+                </h3>
+
+                <p>
+                    There are currently no student records.
+                </p>
+
+            </div>
         }
-    </div>
+        else
+        {
+            <table class="mw-table">
 
-    <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>University</th>
+                        <th>Major</th>
+                        <th>Year</th>
+                        <th>City</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>University</th>
-                <th>Major</th>
-                <th>Academic Year</th>
-                <th>City</th>
+                <tbody>
 
-                @if (User.IsInRole("Admin"))
-                {
-                    <th>Actions</th>
-                }
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach (var student in Model)
-            {
-                <tr>
-                    <td>
-                        @student.FName @student.LName
-                    </td>
-
-                    <td>
-                        @student.Email
-                    </td>
-
-                    <td>
-                        @student.University
-                    </td>
-
-                    <td>
-                        @student.Major
-                    </td>
-
-                    <td>
-                        @student.AcademicYear
-                    </td>
-
-                    <td>
-                        @student.City
-                    </td>
-
-                    @if (User.IsInRole("Admin"))
+                    @foreach (var student in Model)
                     {
-                        <td>
+                        <tr>
 
-                            <a asp-action="Edit"
-                               asp-route-id="@student.Id"
-                               class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
+                            <td>
+                                <strong>
+                                    @student.FName @student.LName
+                                </strong>
+                            </td>
 
-                            <a asp-action="Details"
-                               asp-route-id="@student.Id"
-                               class="btn btn-info btn-sm">
-                                Details
-                            </a>
+                            <td>
+                                @student.Email
+                            </td>
 
-                            <a asp-action="Delete"
-                               asp-route-id="@student.Id"
-                               class="btn btn-danger btn-sm">
-                                Delete
-                            </a>
+                            <td>
+                                @(student.University ?? "—")
+                            </td>
 
-                        </td>
+                            <td>
+                                @(student.Major ?? "—")
+                            </td>
+
+                            <td>
+                                @(student.AcademicYear?.ToString() ?? "—")
+                            </td>
+
+                            <td>
+                                @(student.City ?? "—")
+                            </td>
+
+                            <td>
+
+                                <div class="d-flex gap-1 flex-wrap">
+
+                                    <!-- View -->
+                                    <a class="mw-btn mw-btn-outline"
+                                       asp-action="Details"
+                                       asp-route-id="@student.Id">
+
+                                        <span class="material-symbols-outlined">
+                                            visibility
+                                        </span>
+
+                                        View
+
+                                    </a>
+
+                                    <!-- Delete -->
+                                    <a class="mw-btn mw-btn-outline"
+                                       asp-action="Delete"
+                                       asp-route-id="@student.Id">
+
+                                        <span class="material-symbols-outlined">
+                                            delete
+                                        </span>
+
+                                        Delete
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
                     }
-                </tr>
-            }
 
-        </tbody>
+                </tbody>
 
-    </table>
+            </table>
+        }
+
+    </div>
 
 </div>
