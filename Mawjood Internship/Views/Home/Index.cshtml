@@ -1,34 +1,84 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-<h1 class="display-4 fw-bold">
-    Mawjood Internship
-</h1>
 
-<p class="lead mt-3">
-    Find internships, training opportunities and build your career.
-</p>
-
-@if (User.Identity != null &&
-     User.Identity.IsAuthenticated)
+@if (User.Identity?.IsAuthenticated == true && User.IsInRole("Admin"))
 {
-    <a asp-controller="Internship"
-       asp-action="Index"
-       class="btn btn-primary btn-lg mt-3">
-        Explore Internships
-    </a>
+    <div class="mw-container mw-section">
+        <div class="mw-admin-hero">
+            <div class="mw-chip" style="background:rgba(255,255,255,.16);color:#fff;">Admin Portal</div>
+            <h1>Admin Dashboard</h1>
+            <p class="mb-0" style="opacity:.9;">Manage the platform using the existing Mawjood administration modules.</p>
+        </div>
+
+        <div class="mw-admin-grid">
+            <a class="mw-card mw-admin-link" asp-controller="Student" asp-action="Index">
+                <h3>Students</h3>
+                <p>View, edit and manage student records.</p>
+            </a>
+            <a class="mw-card mw-admin-link" asp-controller="Company" asp-action="Index">
+                <h3>Companies</h3>
+                <p>View and manage company records.</p>
+            </a>
+            <a class="mw-card mw-admin-link" asp-controller="Internship" asp-action="Index">
+                <h3>Internships</h3>
+                <p>Manage internship opportunities.</p>
+            </a>
+            <a class="mw-card mw-admin-link" asp-controller="Skill" asp-action="Index">
+                <h3>Skills</h3>
+                <p>Manage the available skill taxonomy.</p>
+            </a>
+            <a class="mw-card mw-admin-link" asp-controller="Application" asp-action="Index">
+                <h3>Applications</h3>
+                <p>Review applications and reject them when needed.</p>
+            </a>
+        </div>
+    </div>
 }
 else
 {
-    <a asp-controller="Account"
-       asp-action="Register"
-       class="btn btn-primary btn-lg mt-3">
-        Get Started
-    </a>
+    <section class="mw-hero">
+        <div class="mw-container">
+            <div class="mw-chip mb-3">Internship opportunities for students</div>
+            <h1>Find Your <span>Internship Opportunity</span></h1>
+            <p>Discover internship opportunities and take the next step toward your professional career with Mawjood.</p>
 
-    <a asp-controller="Account"
-       asp-action="Login"
-       class="btn btn-outline-dark btn-lg mt-3">
-        Login
-    </a>
+            <div class="mw-actions-row" style="margin-top:24px;padding-top:0;">
+                <a class="mw-btn mw-btn-primary" asp-controller="Internship" asp-action="Index">Browse Internships</a>
+                @if (User.Identity?.IsAuthenticated != true)
+                {
+                    <a class="mw-btn mw-btn-outline" asp-controller="Account" asp-action="Register">Create Account</a>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="mw-section">
+        <div class="mw-container">
+            <div class="mw-section-head">
+                <div>
+                    <h2>How Mawjood Works</h2>
+                    <p>A simple path from profile to opportunity.</p>
+                </div>
+            </div>
+
+            <div class="mw-feature-row">
+                <div class="mw-card mw-feature">
+                    <div class="mw-feature-icon"><span class="material-symbols-outlined">person</span></div>
+                    <h3>1. Create Your Profile</h3>
+                    <p>Keep your academic and personal information ready for internship opportunities.</p>
+                </div>
+                <div class="mw-card mw-feature">
+                    <div class="mw-feature-icon"><span class="material-symbols-outlined">search</span></div>
+                    <h3>2. Find an Internship</h3>
+                    <p>Browse the internship opportunities available in the system.</p>
+                </div>
+                <div class="mw-card mw-feature">
+                    <div class="mw-feature-icon"><span class="material-symbols-outlined">description</span></div>
+                    <h3>3. Manage Your CV</h3>
+                    <p>Upload your PDF CV or save an external CV/portfolio link.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 }

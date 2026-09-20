@@ -1,430 +1,323 @@
-﻿@* @using BLogicLayer.ViewModels
-
-@model RegisterViewModel
-@{ ViewData["Title"] = "Register"; }
-<div class="col-md-7">
-
-    <div class="card shadow p-4">
-
-        <h2 class="text-center mb-4">
-            Student Registration
-        </h2>
-
-        <form asp-action="Register" method="post">
-
-            @Html.AntiForgeryToken()
-
-            <div asp-validation-summary="All"
-                 class="text-danger">
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="FName"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="FName"
-                           class="form-control" />
-
-                    <span asp-validation-for="FName"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="LName"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="LName"
-                           class="form-control" />
-
-                    <span asp-validation-for="LName"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="mb-3">
-
-                <label asp-for="Email"
-                       class="form-label">
-                </label>
-
-                <input asp-for="Email"
-                       class="form-control" />
-
-                <span asp-validation-for="Email"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="Password"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Password"
-                           class="form-control" />
-
-                    <span asp-validation-for="Password"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="ConfirmPassword"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="ConfirmPassword"
-                           class="form-control" />
-
-                    <span asp-validation-for="ConfirmPassword"
-                          class="text-danger">
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="mb-3">
-
-                <label asp-for="University"
-                       class="form-label">
-                </label>
-
-                <input asp-for="University"
-                       class="form-control" />
-
-            </div>
-
-            <div class="mb-3">
-
-                <label asp-for="Major"
-                       class="form-label">
-                </label>
-
-                <input asp-for="Major"
-                       class="form-control" />
-
-            </div>
-
-            <div class="mb-3">
-
-                <label asp-for="Education"
-                       class="form-label">
-                </label>
-
-                <input asp-for="Education"
-                       class="form-control" />
-
-            </div>
-
-            <div class="mb-3">
-
-                <label asp-for="AcademicYear"
-                       class="form-label">
-                </label>
-
-                <input asp-for="AcademicYear"
-                       type="number"
-                       class="form-control" />
-
-                <span asp-validation-for="AcademicYear"
-                      class="text-danger">
-                </span>
-
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-6 mb-3">
-
-                    <label asp-for="City"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="City"
-                           class="form-control" />
-
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label asp-for="Government"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Government" class="form-control" />
-
-                </div>
-
-            </div>
-
-            <button type="submit"
-                    class="btn btn-success w-100">
-                Create Account
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-} *@
-
-
-
-                @using BLogicLayer.ViewModels
-
-@model RegisterViewModel
+﻿@model BLogicLayer.ViewModels.RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
 }
 
-<div class="row justify-content-center">
+<div class="container mw-container mw-auth-wrap mw-register-wrap">
 
-    <div class="col-md-7">
+    <div class="mw-auth-card mw-auth-wide">
 
-        <div class="card shadow p-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
 
-            <h2 class="text-center mb-4">
-                Student Registration
-            </h2>
+            <div class="mw-auth-icon">
+                <span class="material-symbols-outlined">
+                    person_add
+                </span>
+            </div>
+
+            <span class="mw-eyebrow">
+                JOIN MAWJOOD
+            </span>
+
+            <h1>
+                Create your student account
+            </h1>
+
+            <p>
+                Enter your information to start using the existing Mawjood student features.
+            </p>
+
+        </div>
 
 
-            <form asp-action="Register"
-                  method="post">
+        <!-- Register Form -->
+        <form asp-controller="Account"
+              asp-action="Register"
+              method="post">
 
-                @Html.AntiForgeryToken()
+            @Html.AntiForgeryToken()
 
 
-                <div asp-validation-summary="All"
-                     class="text-danger mb-3">
+            <!-- Validation Summary -->
+            <div asp-validation-summary="All"
+                 class="alert alert-danger"
+                 role="alert">
+            </div>
+
+
+            <div class="row g-3">
+
+
+                <!-- First Name -->
+                <div class="col-md-6">
+
+                    <label asp-for="FName"
+                           class="form-label">
+                        First name
+                    </label>
+
+                    <input asp-for="FName"
+                           class="form-control mw-input"
+                           autocomplete="given-name"
+                           placeholder="Enter your first name" />
+
+                    <span asp-validation-for="FName"
+                          class="text-danger small">
+                    </span>
+
                 </div>
 
 
-                <!-- Names -->
+                <!-- Last Name -->
+                <div class="col-md-6">
 
-                <div class="row">
+                    <label asp-for="LName"
+                           class="form-label">
+                        Last name
+                    </label>
 
-                    <div class="col-md-6 mb-3">
+                    <input asp-for="LName"
+                           class="form-control mw-input"
+                           autocomplete="family-name"
+                           placeholder="Enter your last name" />
 
-                        <label asp-for="FName"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="FName"
-                               class="form-control" />
-
-                        <span asp-validation-for="FName"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="LName"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="LName"
-                               class="form-control" />
-
-                        <span asp-validation-for="LName"
-                              class="text-danger">
-                        </span>
-
-                    </div>
+                    <span asp-validation-for="LName"
+                          class="text-danger small">
+                    </span>
 
                 </div>
 
 
                 <!-- Email -->
-
-                <div class="mb-3">
+                <div class="col-12">
 
                     <label asp-for="Email"
                            class="form-label">
+                        Email address
                     </label>
 
                     <input asp-for="Email"
-                           class="form-control" />
+                           class="form-control mw-input"
+                           autocomplete="email"
+                           placeholder="you@example.com" />
 
                     <span asp-validation-for="Email"
-                          class="text-danger">
+                          class="text-danger small">
                     </span>
 
                 </div>
 
 
                 <!-- Password -->
+                <div class="col-md-6">
 
-                <div class="row">
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="Password"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="Password"
-                               class="form-control" />
-
-                        <span asp-validation-for="Password"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="ConfirmPassword"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="ConfirmPassword"
-                               class="form-control" />
-
-                        <span asp-validation-for="ConfirmPassword"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- University -->
-
-                <div class="mb-3">
-
-                    <label asp-for="University"
+                    <label asp-for="Password"
                            class="form-label">
+                        Password
                     </label>
 
-                    <input asp-for="University"
-                           class="form-control" />
+                    <input asp-for="Password"
+                           class="form-control mw-input"
+                           autocomplete="new-password"
+                           placeholder="Enter your password" />
 
-                </div>
-
-
-                <!-- Major -->
-
-                <div class="mb-3">
-
-                    <label asp-for="Major"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Major"
-                           class="form-control" />
-
-                </div>
-
-
-                <!-- Education -->
-
-                <div class="mb-3">
-
-                    <label asp-for="Education"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="Education"
-                           class="form-control" />
-
-                </div>
-
-
-                <!-- Academic Year -->
-
-                <div class="mb-3">
-
-                    <label asp-for="AcademicYear"
-                           class="form-label">
-                    </label>
-
-                    <input asp-for="AcademicYear"
-                           type="number"
-                           class="form-control"
-                           min="1"
-                           max="5" />
-
-                    <span asp-validation-for="AcademicYear"
-                          class="text-danger">
+                    <span asp-validation-for="Password"
+                          class="text-danger small">
                     </span>
 
                 </div>
 
 
-                <!-- City / Government -->
+                <!-- Confirm Password -->
+                <div class="col-md-6">
 
-                <div class="row">
+                    <label asp-for="ConfirmPassword"
+                           class="form-label">
+                        Confirm password
+                    </label>
 
-                    <div class="col-md-6 mb-3">
+                    <input asp-for="ConfirmPassword"
+                           class="form-control mw-input"
+                           autocomplete="new-password"
+                           placeholder="Confirm your password" />
 
-                        <label asp-for="City"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="City"
-                               class="form-control" />
-
-                        <span asp-validation-for="City"
-                              class="text-danger">
-                        </span>
-
-                    </div>
-
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="Government"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="Government"
-                               class="form-control" />
-
-                        <span asp-validation-for="Government"
-                              class="text-danger">
-                        </span>
-
-                    </div>
+                    <span asp-validation-for="ConfirmPassword"
+                          class="text-danger small">
+                    </span>
 
                 </div>
 
 
-                <!-- Submit -->
+                <!-- University -->
+                <div class="col-md-6">
 
-                <button type="submit"
-                        class="btn btn-success w-100">
+                    <label asp-for="University"
+                           class="form-label">
+                        University
+                    </label>
 
-                    Create Account
+                    <input asp-for="University"
+                           class="form-control mw-input"
+                           placeholder="Your university" />
 
-                </button>
+                    <span asp-validation-for="University"
+                          class="text-danger small">
+                    </span>
 
-            </form>
+                </div>
+
+
+                <!-- Major -->
+                <div class="col-md-6">
+
+                    <label asp-for="Major"
+                           class="form-label">
+                        Major
+                    </label>
+
+                    <input asp-for="Major"
+                           class="form-control mw-input"
+                           placeholder="Your major" />
+
+                    <span asp-validation-for="Major"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <!-- Education -->
+                <div class="col-md-6">
+
+                    <label asp-for="Education"
+                           class="form-label">
+                        Education
+                    </label>
+
+                    <input asp-for="Education"
+                           class="form-control mw-input"
+                           placeholder="Your education" />
+
+                    <span asp-validation-for="Education"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <!-- Academic Year -->
+                <div class="col-md-6">
+
+                    <label asp-for="AcademicYear"
+                           class="form-label">
+                        Academic year
+                    </label>
+
+                    <select asp-for="AcademicYear"
+                            class="form-select mw-input">
+
+                        <option value="">
+                            Select academic year
+                        </option>
+
+                        <option value="1">
+                            Year 1
+                        </option>
+
+                        <option value="2">
+                            Year 2
+                        </option>
+
+                        <option value="3">
+                            Year 3
+                        </option>
+
+                        <option value="4">
+                            Year 4
+                        </option>
+
+                        <option value="5">
+                            Year 5
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="AcademicYear"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <!-- City -->
+                <div class="col-md-6">
+
+                    <label asp-for="City"
+                           class="form-label">
+                        City
+                    </label>
+
+                    <input asp-for="City"
+                           class="form-control mw-input"
+                           placeholder="Your city" />
+
+                    <span asp-validation-for="City"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+
+                <!-- Government -->
+                <div class="col-md-6">
+
+                    <label asp-for="Government"
+                           class="form-label">
+                        Government
+                    </label>
+
+                    <input asp-for="Government"
+                           class="form-control mw-input"
+                           placeholder="Your government" />
+
+                    <span asp-validation-for="Government"
+                          class="text-danger small">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="btn mw-btn mw-btn-primary w-100 mw-btn-lg mt-4">
+
+                Create Account
+
+                <span class="material-symbols-outlined">
+                    arrow_forward
+                </span>
+
+            </button>
+
+        </form>
+
+
+        <!-- Login Link -->
+        <div class="text-center mt-4">
+
+            Already have an account?
+
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="mw-link">
+
+                Login
+
+            </a>
 
         </div>
 

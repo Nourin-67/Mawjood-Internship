@@ -16,5 +16,7 @@ namespace BLogicLayer.ViewModels
         public int CompanyId { get; set; }
 
         public string CompanyName { get; set; }
+        public bool HasApplied { get; set; }
+        public string? ApplicationStatus { get; set; }
     }
 }

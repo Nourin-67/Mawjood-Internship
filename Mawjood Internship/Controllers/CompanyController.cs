@@ -2,18 +2,24 @@
 using BLogicLayer.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-namespace Mawjood_Internship.Controllers
+
+namespace Mawjood_Internship77.Controllers
 {
     [Authorize]
     public class CompanyController : Controller
     {
         private readonly ICompanyService _companyService;
+
         public CompanyController(ICompanyService companyService)
         {
             _companyService = companyService;
         }
 
-        // GET: Company
+        // =========================================================
+        // INDEX
+        // =========================================================
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var companies = await _companyService.GetAll();
@@ -21,92 +27,132 @@ namespace Mawjood_Internship.Controllers
             return View(companies);
         }
 
-        // GET: Company/Details/5
+        // =========================================================
+        // DETAILS
+        // =========================================================
+
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var company = await _companyService.GetById(id);
 
             if (company == null)
+            {
                 return NotFound();
+            }
 
             return View(company);
         }
 
-        // GET: Company/Create
+        // =========================================================
+        // CREATE - GET
+        // =========================================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Company/Create
+        // =========================================================
+        // CREATE - POST
+        // =========================================================
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Create(
-            CompanyViewModel model)
+        public async Task<IActionResult> Create(CompanyViewModel model)
         {
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
 
             await _companyService.Add(model);
 
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Company/Edit/5
+        // =========================================================
+        // EDIT - GET
+        // =========================================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var company = await _companyService.GetById(id);
 
             if (company == null)
+            {
                 return NotFound();
+            }
 
             return View(company);
         }
 
-        // POST: Company/Edit/5
+        // =========================================================
+        // EDIT - POST
+        // =========================================================
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(
             int id,
             CompanyViewModel model)
         {
             if (id != model.Id)
-                return BadRequest();
+            {
+                return NotFound();
+            }
 
             if (!ModelState.IsValid)
+            {
                 return View(model);
+            }
 
             await _companyService.Update(model);
 
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Company/Delete/5
+        // =========================================================
+        // DELETE - GET
+        // =========================================================
+
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
             var company = await _companyService.GetById(id);
 
             if (company == null)
+            {
                 return NotFound();
+            }
 
             return View(company);
         }
 
-        // POST: Company/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        // =========================================================
+        // DELETE - POST
+        // =========================================================
+
         [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var deleted = await _companyService.Delete(id);
+            var company = await _companyService.GetById(id);
 
-            if (!deleted)
+            if (company == null)
+            {
                 return NotFound();
+            }
+
+            await _companyService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }

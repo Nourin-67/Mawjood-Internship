@@ -1,81 +1,189 @@
-﻿@* @using BLogicLayer.ViewModels
-@model InternshipViewModel
+﻿@model BLogicLayer.ViewModels.InternshipViewModel
 
 @{
     ViewData["Title"] = "Internship Details";
 }
 
-<div class="card shadow">
+<div class="mw-container mw-section">
 
-    <div class="card-header bg-dark text-white">
-        <h3>@Model.Title</h3>
-    </div>
+    <a class="mw-muted" asp-action="Index">
+        ← Back to internships
+    </a>
 
-    <div class="card-body">
+    <div class="mw-card mw-detail mt-3">
 
-        <p>
-            <strong>Title:</strong>
-            @Model.Title
-        </p>
+        <span class="mw-chip">@Model.Location</span>
 
-        <p>
-            <strong>Location:</strong>
-            @Model.Location
-        </p>
+        <h1 class="mt-3">@Model.Title</h1>
 
-        <p>
-            <strong>Company:</strong>
+        <p class="mw-muted mb-0">
             @Model.CompanyName
         </p>
 
-        <a asp-action="Index"
-           class="btn btn-secondary">
-            Back
-        </a>
+        <div class="mw-detail-section mt-4">
+
+            <h2>Internship Details</h2>
+
+            <div class="mw-info-grid">
+
+                <div class="mw-info-item">
+                    <div class="mw-info-label">Title</div>
+                    <div class="mw-info-value">
+                        @Model.Title
+                    </div>
+                </div>
+
+                <div class="mw-info-item">
+                    <div class="mw-info-label">Location</div>
+                    <div class="mw-info-value">
+                        @Model.Location
+                    </div>
+                </div>
+
+                <div class="mw-info-item">
+                    <div class="mw-info-label">Company</div>
+                    <div class="mw-info-value">
+                        @Model.CompanyName
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @* =========================
+           ADMIN ACTIONS
+           ========================= *@
 
         @if (User.IsInRole("Admin"))
         {
-            <a asp-action="Edit"
-               asp-route-id="@Model.Id"
-               class="btn btn-warning">
-                Edit
-            </a>
+            <div class="mw-actions-row">
+
+                <a class="mw-btn mw-btn-primary"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Id">
+                    Edit Internship
+                </a>
+
+                <a class="mw-btn mw-btn-outline"
+                   asp-action="Delete"
+                   asp-route-id="@Model.Id">
+                    Delete
+                </a>
+
+            </div>
+        }
+
+        @* =========================
+           STUDENT ACTIONS
+           ========================= *@
+
+        else if (User.IsInRole("User"))
+        {
+            <div class="mw-detail-section">
+
+                <div class="mw-card mw-card-pad"
+                     style="background:#f5f8ff;border-color:#dbe6ff;">
+
+                    <strong>Interested in this opportunity?</strong>
+
+                    <p class="mw-muted mb-3 mt-1">
+                        Apply now and your profile will be matched automatically
+                        with this internship.
+                    </p>
+
+                    @if (Model.HasApplied)
+                    {
+                        <button type="button"
+                                class="mw-btn mw-btn-outline"
+                                disabled>
+
+                            @if (Model.ApplicationStatus == "Accepted")
+                            {
+                                <span class="material-symbols-outlined">
+                                    check_circle
+                                </span>
+
+                                <span>Accepted</span>
+                            }
+                            else if (Model.ApplicationStatus == "Rejected")
+                            {
+                                <span class="material-symbols-outlined">
+                                    cancel
+                                </span>
+
+                                <span>Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="material-symbols-outlined">
+                                    schedule
+                                </span>
+
+                                <span>
+                                    Applied / Pending
+                                </span>
+                            }
+
+                        </button>
+                    }
+                    else
+                    {
+                        <form asp-controller="Application"
+                              asp-action="Apply"
+                              method="post">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="internshipId"
+                                   value="@Model.Id" />
+
+                            <button type="submit"
+                                    class="mw-btn mw-btn-primary">
+
+                                <span class="material-symbols-outlined">
+                                    send
+                                </span>
+
+                                Apply Now
+
+                            </button>
+
+                        </form>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+        @* =========================
+           NOT LOGGED IN
+           ========================= *@
+
+        else
+        {
+            <div class="mw-detail-section">
+
+                <div class="mw-card mw-card-pad"
+                     style="background:#f5f8ff;border-color:#dbe6ff;">
+
+                    <strong>Interested in this opportunity?</strong>
+
+                    <p class="mw-muted mb-3 mt-1">
+                        Login as a student to apply for this internship.
+                    </p>
+
+                    <a class="mw-btn mw-btn-primary"
+                       asp-controller="Account"
+                       asp-action="Login">
+                        Login to Apply
+                    </a>
+
+                </div>
+
+            </div>
         }
 
     </div>
-</div> *@
-
-
-
-@model BLogicLayer.ViewModels.InternshipViewModel
-
-@{
-    ViewData["Title"] = "Internship Details";
-}
-
-<div class="container mt-4">
-
-    <h2>Internship Details</h2>
-
-    <div class="card p-4">
-
-        <h4>@Model.Title</h4>
-
-        <p>
-            <strong>Location:</strong>
-            @Model.Location
-        </p>
-
-        <p>
-            <strong>Company:</strong>
-            @Model.CompanyName
-        </p>
-
-    </div>
-
-    <a asp-action="Index"
-       class="btn btn-secondary mt-3">
-        Back
-    </a>
-
 </div>

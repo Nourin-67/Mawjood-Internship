@@ -3,145 +3,276 @@ using BLogicLayer.ViewModels;
 using DataAccessLayer.Data;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+
 namespace BLogicLayer.Services
 {
     public class ApplicationService : IApplicationService
     {
         private readonly ApplicationDbContext _context;
-        public ApplicationService(
-            ApplicationDbContext context)
+
+        public ApplicationService(ApplicationDbContext context)
         {
             _context = context;
         }
 
 
-        // =========================
-        // GET ALL APPLICATIONS
-        // =========================
+        // =========================================================
+        // GET ALL - ADMIN
+        // =========================================================
 
-        public async Task<List<ApplicationViewModel>>
-            GetAll()
+        public async Task<List<ApplicationViewModel>> GetAll()
         {
             return await _context.Applications
                 .AsNoTracking()
-                .Include(x => x.Student)
-                .Include(x => x.Internship)
-                .Select(x => new ApplicationViewModel
+                .Include(a => a.Student)
+                .Include(a => a.Internship)
+                .Select(a => new ApplicationViewModel
                 {
-                    Id = x.Id,
+                    Id = a.Id,
 
-                    StudentId =
-                        x.StudentId,
+                    StudentId = a.StudentId,
 
-                    InternshipId =
-                        x.InternshipId,
+                    InternshipId = a.InternshipId,
 
-                    Date =
-                        x.Date,
+                    Date = a.Date,
 
-                    Status =
-                        x.Status,
+                    Status = a.Status,
+
+                    MatchingScore = a.MatchingScore,
 
                     StudentName =
-                        x.Student.FName +
-                        " " +
-                        x.Student.LName,
+                        a.Student.FName + " " + a.Student.LName,
 
                     InternshipTitle =
-                        x.Internship.Title
+                        a.Internship.Title,
+
+                    // =====================================================
+                    // CV LINK
+                    // =====================================================
+
+                    CVLink =
+                        !string.IsNullOrWhiteSpace(
+                            a.Student.ExternalCVLink)
+                            ? a.Student.ExternalCVLink
+
+                        : !string.IsNullOrWhiteSpace(
+                            a.Student.CVFilePath)
+                            ? a.Student.CVFilePath
+
+                        : !string.IsNullOrWhiteSpace(
+                            a.Student.CV)
+                            ? a.Student.CV
+
+                        : null
                 })
+                .OrderByDescending(a => a.Date)
                 .ToListAsync();
         }
 
 
-        // =========================
+        // =========================================================
         // GET BY ID
-        // =========================
+        // =========================================================
 
-        public async Task<ApplicationViewModel>
-            GetById(int id)
+        public async Task<ApplicationViewModel?> GetById(int id)
         {
             return await _context.Applications
                 .AsNoTracking()
-                .Include(x => x.Student)
-                .Include(x => x.Internship)
-                .Where(x => x.Id == id)
-                .Select(x => new ApplicationViewModel
+                .Include(a => a.Student)
+                .Include(a => a.Internship)
+                .Where(a => a.Id == id)
+                .Select(a => new ApplicationViewModel
                 {
-                    Id = x.Id,
+                    Id = a.Id,
 
-                    StudentId =
-                        x.StudentId,
+                    StudentId = a.StudentId,
 
-                    InternshipId =
-                        x.InternshipId,
+                    InternshipId = a.InternshipId,
 
-                    Date =
-                        x.Date,
+                    Date = a.Date,
 
-                    Status =
-                        x.Status,
+                    Status = a.Status,
+
+                    MatchingScore = a.MatchingScore,
 
                     StudentName =
-                        x.Student.FName +
-                        " " +
-                        x.Student.LName,
+                        a.Student.FName + " " + a.Student.LName,
 
                     InternshipTitle =
-                        x.Internship.Title
+                        a.Internship.Title,
+
+                    // =====================================================
+                    // CV LINK
+                    // =====================================================
+
+                    CVLink =
+                        !string.IsNullOrWhiteSpace(
+                            a.Student.ExternalCVLink)
+                            ? a.Student.ExternalCVLink
+
+                        : !string.IsNullOrWhiteSpace(
+                            a.Student.CVFilePath)
+                            ? a.Student.CVFilePath
+
+                        : !string.IsNullOrWhiteSpace(
+                            a.Student.CV)
+                            ? a.Student.CV
+
+                        : null
                 })
                 .FirstOrDefaultAsync();
         }
 
 
-        // =========================
-        // ADD APPLICATION
-        // =========================
+        // =========================================================
+        // APPLY
+        // =========================================================
 
-        public async Task Add(
-            ApplicationViewModel model)
+        public async Task<(bool Success, string Message)> Apply(
+            int studentId,
+            int internshipId)
         {
-            var application =
-                new Application
-                {
-                    StudentId =
-                        model.StudentId,
+            // =====================================================
+            // CHECK STUDENT
+            // =====================================================
 
-                    InternshipId =
-                        model.InternshipId,
+            var student = await _context.Students
+                .FirstOrDefaultAsync(s => s.Id == studentId);
 
-                    Date =
-                        model.Date,
+            if (student == null)
+            {
+                return (
+                    false,
+                    "Student was not found."
+                );
+            }
 
-                    Status =
-                        string.IsNullOrWhiteSpace(
-                            model.Status)
+
+            // =====================================================
+            // CHECK INTERNSHIP
+            // =====================================================
+
+            var internship = await _context.Internships
+                .FirstOrDefaultAsync(i => i.Id == internshipId);
+
+            if (internship == null)
+            {
+                return (
+                    false,
+                    "Internship was not found."
+                );
+            }
+
+
+            // =====================================================
+            // PREVENT DUPLICATE APPLICATION
+            // =====================================================
+
+            var existingApplication =
+                await _context.Applications
+                    .FirstOrDefaultAsync(a =>
+                        a.StudentId == studentId &&
+                        a.InternshipId == internshipId);
+
+            if (existingApplication != null)
+            {
+                return (
+                    false,
+                    "You have already applied for this internship."
+                );
+            }
+
+
+            // =====================================================
+            // MATCHING SCORE
+            // =====================================================
+            // Fixed matching score between 85% and 95%.
+            // The value is stable for the same student/internship
+            // and is stored in the database.
+            // =====================================================
+
+            double matchingScore =
+                85 + ((studentId + internshipId) % 11);
+
+
+            // =====================================================
+            // CREATE APPLICATION
+            // =====================================================
+
+            var application = new Application
+            {
+                StudentId = studentId,
+
+                InternshipId = internshipId,
+
+                Date = DateTime.Now,
+
+                Status = "Pending",
+
+                MatchingScore = matchingScore
+            };
+
+
+            _context.Applications.Add(application);
+
+
+            await _context.SaveChangesAsync();
+
+
+            return (
+                true,
+                "Application submitted successfully."
+            );
+        }
+
+
+        // =========================================================
+        // ADD - ADMIN
+        // =========================================================
+
+        public async Task Add(ApplicationViewModel model)
+        {
+            var application = new Application
+            {
+                StudentId = model.StudentId,
+
+                InternshipId = model.InternshipId,
+
+                Date = model.Date,
+
+                Status =
+                    string.IsNullOrWhiteSpace(model.Status)
                         ? "Pending"
-                        : model.Status
-                };
+                        : model.Status,
+
+                MatchingScore = model.MatchingScore
+            };
 
 
-            _context.Applications.Add(
-                application);
+            _context.Applications.Add(application);
+
 
             await _context.SaveChangesAsync();
         }
 
 
-        // =========================
-        // UPDATE
-        // =========================
+        // =========================================================
+        // UPDATE - ADMIN
+        // =========================================================
 
-        public async Task Update(
-            ApplicationViewModel model)
+        public async Task Update(ApplicationViewModel model)
         {
             var application =
                 await _context.Applications
-                    .FindAsync(model.Id);
+                    .FirstOrDefaultAsync(
+                        a => a.Id == model.Id
+                    );
 
 
             if (application == null)
+            {
                 return;
+            }
 
 
             application.StudentId =
@@ -156,56 +287,163 @@ namespace BLogicLayer.Services
             application.Status =
                 model.Status;
 
+            application.MatchingScore =
+                model.MatchingScore;
+
 
             await _context.SaveChangesAsync();
         }
 
 
-        // =========================
+        // =========================================================
         // DELETE
-        // =========================
+        // =========================================================
 
         public async Task<bool> Delete(int id)
         {
             var application =
                 await _context.Applications
-                    .FindAsync(id);
+                    .FirstOrDefaultAsync(
+                        a => a.Id == id
+                    );
 
 
             if (application == null)
+            {
                 return false;
+            }
 
 
             _context.Applications.Remove(
-                application);
+                application
+            );
+
 
             await _context.SaveChangesAsync();
+
 
             return true;
         }
 
 
-        // =========================
+        // =========================================================
+        // ACCEPT
+        // =========================================================
+
+        public async Task<bool> Accept(int id)
+        {
+            var application =
+                await _context.Applications
+                    .Include(a => a.Student)
+                    .Include(a => a.Internship)
+                    .FirstOrDefaultAsync(
+                        a => a.Id == id
+                    );
+
+
+            if (application == null)
+            {
+                return false;
+            }
+
+
+            application.Status =
+                "Accepted";
+
+
+            var notification =
+                new Notification
+                {
+                    StudentId =
+                        application.StudentId,
+
+                    Message =
+                        $"Your application for \"{application.Internship.Title}\" has been accepted.",
+
+                    IsRead = false,
+
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
+
+
+            _context.Notifications.Add(
+                notification
+            );
+
+
+            await _context.SaveChangesAsync();
+
+
+            return true;
+        }
+
+
+        // =========================================================
         // REJECT
-        // =========================
+        // =========================================================
+
         public async Task<bool> Reject(int id)
         {
             var application =
                 await _context.Applications
-                    .FindAsync(id);
+                    .Include(a => a.Student)
+                    .Include(a => a.Internship)
+                    .FirstOrDefaultAsync(
+                        a => a.Id == id
+                    );
 
 
             if (application == null)
+            {
                 return false;
+            }
 
 
             application.Status =
                 "Rejected";
 
 
+            var notification =
+                new Notification
+                {
+                    StudentId =
+                        application.StudentId,
+
+                    Message =
+                        $"Your application for \"{application.Internship.Title}\" has been rejected.",
+
+                    IsRead = false,
+
+                    CreatedAt =
+                        DateTime.UtcNow
+                };
+
+
+            _context.Notifications.Add(
+                notification
+            );
+
+
             await _context.SaveChangesAsync();
 
+
             return true;
+        }
+
+
+        // =========================================================
+        // HAS APPLIED
+        // =========================================================
+
+        public async Task<bool> HasApplied(
+            int studentId,
+            int internshipId)
+        {
+            return await _context.Applications
+                .AnyAsync(a =>
+                    a.StudentId == studentId &&
+                    a.InternshipId == internshipId);
         }
     }
 }
